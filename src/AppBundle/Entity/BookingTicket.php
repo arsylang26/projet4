@@ -2,7 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Egulias\EmailValidator;
+
 
 /**
  * BookingTicket
@@ -12,6 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BookingTicket
 {
+
+
+    const TYPE_DAY = true;
+    const TYPE_HALF_DAY = false;
+
     /**
      * @var int
      *
@@ -24,7 +33,11 @@ class BookingTicket
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=30)
+     * @ORM\Column(name="email", type="string", length=100)
+     * @Assert\NotBlank(message="entrer une adresse courrier")
+     * @Assert\Email(checkMX=true,message="l'adresse courriel '{{ value }}' n'est pas valide: vérifiez votre saisie.")
+     * @Assert\Email(strict="true", message="vérifiez votre saisie")
+     * @Assert\Length(min="6", max="100", minMessage="non valide", maxMessage="non valide")
      */
     private $email;
 
@@ -46,9 +59,33 @@ class BookingTicket
      * @var int
      *
      * @ORM\Column(name="nbTicket", type="integer")
+     * @Assert\DateTime()
      */
     private $nbTicket;
 
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Ticket",mappedBy="booking",cascade={"persist"})
+     *
+     */
+    private $tickets;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="dayLong", type="boolean",options={"BookingTicket"=BookingTicket::TYPE_DAY})
+     */
+    private $dayLong = self::TYPE_DAY;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->currentdate = new \DateTime('now');
+
+    }
 
     /**
      * Get id
@@ -58,6 +95,16 @@ class BookingTicket
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -75,13 +122,13 @@ class BookingTicket
     }
 
     /**
-     * Get email
+     * Get currentDate
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getEmail()
+    public function getCurrentDate()
     {
-        return $this->email;
+        return $this->currentDate;
     }
 
     /**
@@ -99,13 +146,13 @@ class BookingTicket
     }
 
     /**
-     * Get currentDate
+     * Get bookingDate
      *
      * @return \DateTime
      */
-    public function getCurrentDate()
+    public function getBookingDate()
     {
-        return $this->currentDate;
+        return $this->bookingDate;
     }
 
     /**
@@ -123,13 +170,13 @@ class BookingTicket
     }
 
     /**
-     * Get bookingDate
+     * Get nbTicket
      *
-     * @return \DateTime
+     * @return int
      */
-    public function getBookingDate()
+    public function getNbTicket()
     {
-        return $this->bookingDate;
+        return $this->nbTicket;
     }
 
     /**
@@ -147,13 +194,60 @@ class BookingTicket
     }
 
     /**
-     * Get nbTicket
+     * Get dayLong
      *
-     * @return int
+     * @return boolean
      */
-    public function getNbTicket()
+    public function getDayLong()
     {
-        return $this->nbTicket;
+        return $this->dayLong;
+    }
+
+    /**
+     * Set dayLong
+     *
+     * @param boolean $dayLong
+     *
+     * @return BookingTicket
+     */
+    public function setDayLong($dayLong)
+    {
+        $this->dayLong = $dayLong;
+
+        return $this;
+    }
+
+    /**
+     * Add ticket
+     *
+     * @param \AppBundle\Entity\Ticket $ticket
+     *
+     * @return BookingTicket
+     */
+    public function addTicket(\AppBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Remove ticket
+     *
+     * @param \AppBundle\Entity\Ticket $ticket
+     */
+    public function removeTicket(\AppBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets->removeElement($ticket);
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
     }
 }
-

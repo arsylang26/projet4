@@ -1,7 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
-
+    use Doctrine\ORM\EntityRepository;
+    use Doctrine\ORM\QueryBuilder;
 /**
  * BookingTicketRepository
  *
@@ -10,4 +11,25 @@ namespace AppBundle\Repository;
  */
 class BookingTicketRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function myFindAll()
+    {
+        // Méthode 1 : en passant par l'EntityManager
+        $queryBuilder = $this->_em->createQueryBuilder()
+            ->select('b')
+            ->from($this->_entityName, 'b')
+        ;
+        // Dans un repository, $this->_entityName est le namespace de l'entité gérée
+        // Ici, il vaut donc AppBundle\Entity\BookingTicket
+        // Méthode 2 : en passant par le raccourci (recommandé)
+        $queryBuilder = $this->createQueryBuilder('b');
+        // On n'ajoute pas de critère ou tri particulier, la construction
+        // de notre requête est finie
+        // On récupère la Query à partir du QueryBuilder
+        $query = $queryBuilder->getQuery();
+        // On récupère les résultats à partir de la Query
+        $results = $query->getResult();
+        // On retourne ces résultats
+        return $results;
+    }
 }

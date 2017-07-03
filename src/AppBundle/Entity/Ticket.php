@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ticket
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ticket
 {
+
     /**
      * @var int
      *
@@ -25,6 +27,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=50)
+     * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="prénom trop long")
      */
     private $firstName;
 
@@ -32,6 +35,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=50)
+     * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="patronyme trop long")
      */
     private $lastName;
 
@@ -49,12 +53,7 @@ class Ticket
      */
     private $country;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="dayLong", type="boolean", nullable=true)
-     */
-    private $dayLong;
+
 
     /**
      * @var bool
@@ -62,6 +61,14 @@ class Ticket
      * @ORM\Column(name="discount", type="boolean", nullable=true)
      */
     private $discount;
+
+    /**
+     * @var BookingTicket
+     * @ORM\ManyToOne(targetEntity="BookingTicket",inversedBy="tickets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $booking;
+
 
 
     /**
@@ -170,29 +177,7 @@ class Ticket
         return $this->country;
     }
 
-    /**
-     * Set dayLong
-     *
-     * @param boolean $dayLong
-     *
-     * @return Ticket
-     */
-    public function setDayLong($dayLong)
-    {
-        $this->dayLong = $dayLong;
 
-        return $this;
-    }
-
-    /**
-     * Get dayLong
-     *
-     * @return bool
-     */
-    public function getDayLong()
-    {
-        return $this->dayLong;
-    }
 
     /**
      * Set discount
@@ -217,5 +202,28 @@ class Ticket
     {
         return $this->discount;
     }
-}
 
+    /**
+     * Set booking
+     *
+     * @param \AppBundle\Entity\BookingTicket $booking
+     *
+     * @return Ticket
+     */
+    public function setBooking(\AppBundle\Entity\BookingTicket $booking)
+    {
+        $this->booking = $booking;
+
+        return $this;
+    }
+
+    /**
+     * Get booking
+     *
+     * @return \AppBundle\Entity\BookingTicket
+     */
+    public function getBooking()
+    {
+        return $this->booking;
+    }
+}
