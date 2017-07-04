@@ -1,3 +1,0 @@
-app_page:
-    ressource: "@AppBundle/Controller"
-    type: annotation

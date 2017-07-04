@@ -16,22 +16,14 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
-class BookingType extends AbstractType
+class BookingPage2Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', RepeatedType::class, array(
-                'type' => EmailType::class,
-                'invalid_message' => 'Les adresses courriels sont différentes.',
-                'options' => array('attr' => array('class' => 'email-field')),
-                'required' => true,
-                'first_options'  => array('label' => 'Votre adresse courriel'),
-                'second_options' => array('label' => 'Confirmer votre adresse courriel')))
-            ->add('bookingDate', DateType::class)
-            ->add('nbTicket', RangeType::class,array('attr'=>array('min'=>1, 'max'=>15)))
-            ->add('dayLong',ChoiceType::class,array('choices'=>array(BookingTicket::TYPE_DAY, BookingTicket::TYPE_HALF_DAY)))
-        ;
+            ->add('tickets', CollectionType::class, array(
+            'entry_type' => TicketType::class));
+
     }
 
 public function configureOptions(OptionsResolver $resolver)

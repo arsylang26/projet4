@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Egulias\EmailValidator;
+
 
 
 /**
@@ -36,21 +36,17 @@ class BookingTicket
      * @ORM\Column(name="email", type="string", length=100)
      * @Assert\NotBlank(message="entrer une adresse courrier")
      * @Assert\Email(checkMX=true,message="l'adresse courriel '{{ value }}' n'est pas valide: vérifiez votre saisie.")
-     * @Assert\Email(strict="true", message="vérifiez votre saisie")
-     * @Assert\Length(min="6", max="100", minMessage="non valide", maxMessage="non valide")
      */
     private $email;
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="currentDate", type="datetime")
      */
     private $currentDate;
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="bookingDate", type="date")
      */
     private $bookingDate;
@@ -59,7 +55,7 @@ class BookingTicket
      * @var int
      *
      * @ORM\Column(name="nbTicket", type="integer")
-     * @Assert\DateTime()
+     *
      */
     private $nbTicket;
 
@@ -83,7 +79,7 @@ class BookingTicket
     public function __construct()
     {
         $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->currentdate = new \DateTime('now');
+        $this->currentDate = new \DateTime();
 
     }
 
