@@ -28,6 +28,7 @@ class Ticket
      *
      * @ORM\Column(name="firstName", type="string", length=50)
      * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="prénom trop long")
+     * @Assert\Type(type="string", message="format du prénom bizzaroïde: {{ value }} n'est pas valide."
      */
     private $firstName;
 
@@ -36,6 +37,7 @@ class Ticket
      *
      * @ORM\Column(name="lastName", type="string", length=50)
      * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="patronyme trop long")
+     * @Assert\Type(type="integer", message="format du nom bizzaroïde: {{ value }} n'est pass valide."
      */
     private $lastName;
 

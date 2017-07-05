@@ -18,9 +18,18 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class BookingType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        for($i=1;$i<=BookingTicket::NB_MAX_TICKET;$i++)
+        {
+            $listNb[$i] = $i;
+        }
         $builder
+
             ->add('email', RepeatedType::class, array(
                 'type' => EmailType::class,
                 'invalid_message' => 'Les adresses courriels sont différentes.',
@@ -28,10 +37,11 @@ class BookingType extends AbstractType
                 'required' => true,
                 'first_options'  => array('label' => 'Votre adresse courriel'),
                 'second_options' => array('label' => 'Confirmer votre adresse courriel')))
-            ->add('bookingDate', DateType::class)
-            ->add('nbTicket', RangeType::class,array('attr'=>array('min'=>1, 'max'=>15)))
-            ->add('dayLong',ChoiceType::class,array('choices'=>array(BookingTicket::TYPE_DAY, BookingTicket::TYPE_HALF_DAY)))
-        ;
+            ->add('bookingDate', DateType::class,array('label'=>'Date de réservation','format'=>'dd-MMMM-yyyy'))
+            ->add('nbTicket', ChoiceType::class,array('choices'=>$listNb,'label'=>'nombre de tickets souhaité'))
+            ->add('dayLong',ChoiceType::class,array('choices'=>array('non'=>BookingTicket::TYPE_DAY, 'oui'=>BookingTicket::TYPE_HALF_DAY),
+                'label'=>'demi-tarif'));
+
     }
 
 public function configureOptions(OptionsResolver $resolver)

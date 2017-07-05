@@ -20,6 +20,7 @@ class BookingTicket
 
     const TYPE_DAY = true;
     const TYPE_HALF_DAY = false;
+    const NB_MAX_TICKET = 15; // plafond de tickets par commande
 
     /**
      * @var int
