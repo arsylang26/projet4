@@ -20,7 +20,7 @@ class BookingTicketRepository extends \Doctrine\ORM\EntityRepository
             ->from($this->_entityName, 'b')
         ;
         // Dans un repository, $this->_entityName est le namespace de l'entité gérée
-        // Ici, il vaut donc AppBundle\Entity\BookingTicket
+        // Ici, il vaut donc app\Entity\BookingTicket
         // Méthode 2 : en passant par le raccourci (recommandé)
         $queryBuilder = $this->createQueryBuilder('b');
         // On n'ajoute pas de critère ou tri particulier, la construction

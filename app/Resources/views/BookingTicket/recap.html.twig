@@ -4,7 +4,7 @@
     <p>résumé de votre commande</p>
     <hr/>
     {% for ticket in listTickets %}
-    <p>Une entrée à la {{//bookingTicket.dayLong=>journée/demi}} à {{ //ticket.discount=>plein/demi-tarif si demi: mention }}</p>
+    <p>Une entrée à la {{}} à {{ //ticket.discount=>plein/demi-tarif si demi: mention }}</p>
     <p>Prix :<strong>{{ ticket.price }}</strong></p>
     <p>Ticket N°: nombre</p>
     <p>nom: {{ ticket.lastName }}  prénom: {{ ticket.firstName }}</p>

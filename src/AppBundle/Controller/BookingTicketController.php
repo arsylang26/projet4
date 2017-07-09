@@ -11,7 +11,10 @@ use AppBundle\Form\Type\BookingType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 
 
@@ -63,6 +66,7 @@ class BookingTicketController extends Controller
         //ajouter ici les calculs du prix de chaque billet et le calcul du cumul des prix des billets
         if ($form->isSubmitted() && $form->isValid()) {
             $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
+            return $this->redirectToRoute("recapBooking");
         }
 
 
@@ -79,8 +83,12 @@ class BookingTicketController extends Controller
     public function recapAction() // résumé de la commande et demande de confirmation
     {
         $em = $this->getDoctrine()->getManager();
-        $booking = $em->getRepository('AppBundle:BookingTicket');
-        $listTickets = $em->getRepository('AppBundle:Ticket')->findBy(array('booking' => $booking));
+        $booking = $em->getRepository('app:BookingTicket');
+        $listTickets = $em->getRepository('app:Ticket')->findBy(array('booking' => $booking));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
+            return $this->redirectToRoute("pay_with_stripe");
+        }
         
     return $this->render('BookingTicket/recap.html.twig', array('listTickets'=>$listTickets));
 
@@ -92,7 +100,7 @@ class BookingTicketController extends Controller
     public function paymentAction() // paiement de la commande avec stripe
     {
         $em = $this->getDoctrine()->getManager();
-        $booking = $em->getRepository('AppBundle:BookingTicket');
+        $booking = $em->getRepository('app:BookingTicket');
         $em->flush();  
     }
 

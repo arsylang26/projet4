@@ -35,7 +35,9 @@
         "doctrine/doctrine-fixtures-bundle": "~2.3",
         "stripe/stripe-php":"~4.12.0",
         "stof/doctrine-extensions-bundle":"^1.2.2",
-        "coresphere/console-bundle": "~0.4"
+        "coresphere/console-bundle": "~0.4",
+        "symfony/serializer":"~3.3",
+        "symfony/property-access":"~3.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

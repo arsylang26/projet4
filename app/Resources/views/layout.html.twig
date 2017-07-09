@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns="http://www.w3.org/1999/html">
 <head>
-    <<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{% block title %}Billetterie Louvre{% endblock %}</title>
-
+    <link rel="shortcut icon" href="{{ asset('bundles/app/pictures/icone.jpg') }}" type="image/x-icon"/>
     {% block stylesheets %}
-    {# On charge le CSS de bootstrap depuis le site directement #}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        {# On charge le CSS de bootstrap depuis le site directement #}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/styleBooking.css') }}">
     {% endblock %}
 </head>
 
@@ -22,16 +23,17 @@
     </div>
     <hr/>
     <footer>
-        <p>Musée du Louvre © {{ 'now'|date('Y') }}</p>
+        <p>Musée du Louvre © {{ 'now'|date('Y') }}
         <a href="#">CGU</a>
         <a href="#">CGV</a>
+        </p>
     </footer>
 </div>
 
 {% block javascripts %}
-{# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% endblock %}
 
 </body>
