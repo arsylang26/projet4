@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+
+}
+
+body {
+    position: relative;
+    background-image: url("../pictures/musee_louvre.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    z-index: 0;
+
+}
+
+#content {
+    opacity: .8;
+    z-index: 1;
+    min-height: 100%; /* 100% de la hauteur du view-port*/
+    background: #e6eeff;
+    width: 100%;
+    margin: auto; /* Permet de centrer la div */
+
+}
+
+label.required:before {
+    content: "* ";
+}
+
+#content h3 {
+    text-align: center;
+}
+
+footer {
+    opacity: .7;
+    z-index: 1;
+    text-align: center;
+    background: #e6eeff;
+}
