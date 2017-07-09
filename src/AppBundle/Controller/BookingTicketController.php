@@ -58,9 +58,10 @@ class BookingTicketController extends Controller
     public function page2Action(Request $request) // saisie du nom, prénom, date de naissance, pays, tarif réduit pour chaque billet
     {
         $booking=$request->getSession()->get("booking");
-        dump($booking);
-        $booking->addTicket(new Ticket());
-        $booking->addTicket(new Ticket());
+       $ticket=new Ticket();
+        //for ($i=1;$i<=$nbTicket;$i++) {
+            $booking->addTicket($ticket);
+       // }
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
         //ajouter ici les calculs du prix de chaque billet et le calcul du cumul des prix des billets
