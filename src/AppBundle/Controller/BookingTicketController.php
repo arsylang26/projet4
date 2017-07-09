@@ -83,8 +83,8 @@ class BookingTicketController extends Controller
     public function recapAction() // résumé de la commande et demande de confirmation
     {
         $em = $this->getDoctrine()->getManager();
-        $booking = $em->getRepository('app:BookingTicket');
-        $listTickets = $em->getRepository('app:Ticket')->findBy(array('booking' => $booking));
+        $booking = $em->getRepository('AppBundle:BookingTicket');
+        $listTickets = $em->getRepository('AppBundle:Ticket')->findBy(array('booking' => $booking));
         if ($form->isSubmitted() && $form->isValid()) {
             $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
             return $this->redirectToRoute("pay_with_stripe");
@@ -100,7 +100,7 @@ class BookingTicketController extends Controller
     public function paymentAction() // paiement de la commande avec stripe
     {
         $em = $this->getDoctrine()->getManager();
-        $booking = $em->getRepository('app:BookingTicket');
+        $booking = $em->getRepository('AppBundle:BookingTicket');
         $em->flush();  
     }
 
