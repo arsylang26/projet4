@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Controller;
 
 
@@ -17,7 +18,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 
-
 class BookingTicketController extends Controller
 {
     /**
@@ -34,7 +34,7 @@ class BookingTicketController extends Controller
         $form->handleRequest($request);
         //ajouter ici le test sur la date de réservation
         if ($form->isSubmitted() && $form->isValid()) {
-            $em=$this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($booking);
             $request->getSession()->getFlashBag()->add('notice', 'votre demande va se poursuivre');
             return $this->redirectToRoute("ticketOrder");
@@ -57,11 +57,11 @@ class BookingTicketController extends Controller
      */
     public function page2Action(Request $request) // saisie du nom, prénom, date de naissance, pays, tarif réduit pour chaque billet
     {
-        $booking=$request->getSession()->get("booking");
-       $ticket=new Ticket();
-        //for ($i=1;$i<=$nbTicket;$i++) {
+        $booking = $request->getSession()->get("booking");
+        $ticket = new Ticket();
+        for ($i = 1; $i <= ($this->get('nbTicket')); $i++) {
             $booking->addTicket($ticket);
-       // }
+        }
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
         //ajouter ici les calculs du prix de chaque billet et le calcul du cumul des prix des billets
@@ -90,8 +90,8 @@ class BookingTicketController extends Controller
             $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
             return $this->redirectToRoute("pay_with_stripe");
         }
-        
-    return $this->render('BookingTicket/recap.html.twig', array('listTickets'=>$listTickets));
+
+        return $this->render('BookingTicket/recap.html.twig', array('listTickets' => $listTickets));
 
     }
 
@@ -102,14 +102,22 @@ class BookingTicketController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $em->getRepository('AppBundle:BookingTicket');
-        $em->flush();  
+        $em->flush();
     }
 
     /**
      * @Route("/confirmOrder", name="sendEmail")
-     */   
-    public function sendEmailAction() // envoi du courriel de confirmation avec résumé de la commande
+     */
+    public function sendEmailAction($name, \Swift_Mailer $mailer) // envoi du courriel de confirmation avec résumé de la commande
     {
 
+        $message = (new \Swift_Message('Vos tickets d\'entrée au Musée du Louvre'))
+            ->setFrom('reservation@louvre.fr')
+            ->setTo('fabien.mallier@orange.fr')
+            ->setBody($this->renderView('BookingTicket/email.html.twig',array('name' => $name)),'text/html');
+        $mailer->send($message);
+
+
+        return $this->renderView('BookingTicket/email.html.twig');
     }
 }
