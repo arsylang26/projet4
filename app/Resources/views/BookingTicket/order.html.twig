@@ -1,0 +1,30 @@
+{% extends '::layout.html.twig' %}
+{% block title %}Musée du Louvre{% endblock %}
+{% block body %}
+    <div class="nav-space-checkout">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1 class="checkout-header">Paiement</h1>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <form action="" method="POST">
+                        <script
+                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="pk_test_OOaMPXWZJnx5D3mDpkZ5q8V6"
+                                data-amount="{{ bookingTicket.total * 100 }}"
+                                data-name="Musee du Louvre"
+                                data-description="Widget"
+                                data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
+                                data-zip-code="true"
+                                data-locale="auto">
+                        </script>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
