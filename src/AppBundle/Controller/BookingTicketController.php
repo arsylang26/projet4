@@ -12,10 +12,7 @@ use AppBundle\Form\Type\BookingType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 
 class BookingTicketController extends Controller
@@ -57,10 +54,19 @@ class BookingTicketController extends Controller
      */
     public function page2Action(Request $request) // saisie du nom, prénom, date de naissance, pays, tarif réduit pour chaque billet
     {
+
         $booking = $request->getSession()->get("booking");
         $ticket = new Ticket();
-        for ($i = 1; $i <= ($this->get('nbTicket')); $i++) {
-            $booking->addTicket($ticket);
+
+        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {
+            if(count($booking->getTickets())<$booking->getNbTicket())
+            {
+                $booking->addTicket($ticket);
+            }
+            elseif (count($booking->getTickets())>$booking->getNbTicket()){
+                $booking->removeTicket($booking->getTickets()->last());
+            }
+
         }
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
@@ -81,17 +87,12 @@ class BookingTicketController extends Controller
     /**
      * @Route("/recapBooking", name="recapBooking")
      */
-    public function recapAction() // résumé de la commande et demande de confirmation
+    public function recapAction(Request $request) // résumé de la commande et demande de confirmation
     {
-        $em = $this->getDoctrine()->getManager();
-        $booking = $em->getRepository('AppBundle:BookingTicket');
-        $listTickets = $em->getRepository('AppBundle:Ticket')->findBy(array('booking' => $booking));
-        if ($form->isSubmitted() && $form->isValid()) {
-            $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
-            return $this->redirectToRoute("pay_with_stripe");
-        }
+        $booking = $request->getSession()->get("booking");
 
-        return $this->render('BookingTicket/recap.html.twig', array('listTickets' => $listTickets));
+
+        return $this->render('BookingTicket/recap.html.twig', array('booking' => $booking));
 
     }
 

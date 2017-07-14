@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-
 /**
  * BookingTicket
  *
@@ -49,6 +48,7 @@ class BookingTicket
     /**
      * @var \DateTime
      * @ORM\Column(name="bookingDate", type="date")
+     * @Assert\GreaterThanOrEqual("today")
      */
     private $bookingDate;
 
@@ -75,12 +75,23 @@ class BookingTicket
     private $dayLong = self::TYPE_DAY;
 
     /**
+     * @var float
+     * @ORM\Column(name="order_amount", type="float")
+     *
+     */
+
+
+    private $orderAmount;
+
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
         $this->currentDate = new \DateTime();
+        $this->bookingDate = new \DateTime();
 
     }
 
@@ -246,5 +257,29 @@ class BookingTicket
     public function getTickets()
     {
         return $this->tickets;
+    }
+
+    /**
+     * Get orderAmount
+     *
+     * @return float
+     */
+    public function getOrderAmount()
+    {
+        return $this->orderAmount;
+    }
+
+    /**
+     * Set orderAmount
+     *
+     * @param float $orderAmount
+     *
+     * @return BookingTicket
+     */
+    public function setOrderAmount($orderAmount)
+    {
+        $this->orderAmount = $orderAmount;
+
+        return $this;
     }
 }

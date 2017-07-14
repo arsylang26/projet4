@@ -26,7 +26,7 @@ class BookingType extends AbstractType
     {
         for($i=1;$i<=BookingTicket::NB_MAX_TICKET;$i++)
         {
-            $listNb[$i] = $i;
+           $listNb[$i] = $i;
         }
         $builder
 
@@ -37,7 +37,8 @@ class BookingType extends AbstractType
                 'required' => true,
                 'first_options'  => array('label' => 'Votre adresse courriel'),
                 'second_options' => array('label' => 'Confirmer votre adresse courriel')))
-            ->add('bookingDate', DateType::class,array('label'=>'Date de réservation','format'=>'dd MMMM yyyy','data' => new \DateTime()))//affichage de la date courante par défaut
+            ->add('bookingDate', DateType::class,array('label'=>'Date de réservation','format'=>'dd MMMM yyyy','widget'=>'single_text',
+                'attr' => ['class' => 'js-datepicker'],'html5' => false))//affichage de la date courante par défaut
             ->add('nbTicket', ChoiceType::class,array('choices'=>$listNb,'label'=>'nombre de tickets souhaité'))
             ->add('dayLong',ChoiceType::class,array('choices'=>array('non'=>BookingTicket::TYPE_DAY, 'oui'=>BookingTicket::TYPE_HALF_DAY),
                 'label'=>'demi-tarif'));

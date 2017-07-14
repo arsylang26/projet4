@@ -1,0 +1,34 @@
+<h3>Musée du louvre</h3>
+<img src="{{ asset('bundles/app/pictures/icone.jpg')}}">
+
+<p>Bonjour cher (chère) client (e), </p>
+
+<p>vous avez commandé {{BookingTicket.nbTicket}} sur notre site web.</p>
+<p>En voici la liste :</p>
+$tickets=array("?"=>"?");
+{%for ticket in tickets%}
+<p>Nom et prénom:<strong>{{ticket.lastName|e}} {{ticket.firstName|e}}</strong></p>
+<p>né(e) le:{{ticket.birthDate|e}}</p>
+<p>Pays:{{ticket.country|e}}</p>
+<p>Prix:{{ticket.price|e}}</p>
+{%if ticket.discount|e%}
+    <p>billet à tarif réduit. Vous munir des justificatifs pour l'entrée au musée</p>
+{%endif%}
+{{%set $dayLong="journée"%}
+{{%if !ticket.daylong|e %}}
+[%set $daylong="demi-journée"%]
+{{%endif%}}
+
+<p>Pour une entrée à la {{$dayLong}} le <strong>{{ticket.bookingDate|e}}</strong></p>
+{%set $code=substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,15)%}//un code alphanumérique aléatoire de 15 caractères
+<p>Code billet: {{$code}}</p>
+<hr />
+{%endfor%}
+<p>Nous vous remercions de votre commande et vous souhaitons une agréable visite.</p>
+<p>Le musée du Louvre. </p>
+<footer>
+    <p>Musée du Louvre © {{ 'now'|date('Y') }}
+        <a href="#">CGU</a>
+        <a href="#">CGV</a>
+    </p>
+</footer>
