@@ -10,6 +10,7 @@
         {# On charge le CSS de bootstrap depuis le site directement #}
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ asset('bundles/app/css/styleBooking.css') }}">
+       <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">-->
     {% endblock %}
 </head>
 
@@ -24,8 +25,8 @@
     <hr/>
     <footer>
         <p>Musée du Louvre © {{ 'now'|date('Y') }}
-        <a href="#">CGU</a>
-        <a href="#">CGV</a>
+            <a href="#">CGU</a>
+            <a href="#">CGV</a>
         </p>
     </footer>
 </div>
@@ -34,7 +35,9 @@
     {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{{ asset('bundles/app/js/perso.js') }}"
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>-->
+    <script src="{{ asset('bundles/app/js/perso.js') }}"></script>
+
 {% endblock %}
 
 </body>

@@ -20,6 +20,10 @@ class BookingTicket
     const TYPE_DAY = true;
     const TYPE_HALF_DAY = false;
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
+    const OFF_DAYS = array('1/05', '1/11', '25/12');// les jours fériés
+    const MAX_BOOKING_IN_A_DAY = 1000;
+    const WEEKLY_CLOSING_DAY = 'tuesday';
+    const HALF_DAY_HOUR = 14; // heure à partir de laquelle on ne peut plus réserver de billet journée le jour même
 
     /**
      * @var int
@@ -79,8 +83,6 @@ class BookingTicket
      * @ORM\Column(name="order_amount", type="float")
      *
      */
-
-
     private $orderAmount;
 
 
@@ -281,5 +283,19 @@ class BookingTicket
         $this->orderAmount = $orderAmount;
 
         return $this;
+    }
+
+    public function isBookingDateOk($date)
+    {
+        if (in_array(\DateTime::createFromFormat('d/m', $date), self::OFF_DAYS) // test sur jours fériés
+            or (\DateTime::createFromFormat('l', $date) == self::WEEKLY_CLOSING_DAY) // test sur jour fermeture hebdo
+            or ((\DateTime::createFromFormat('H:i', new \DateTime())) > self::HALF_DAY_HOUR)
+            and (\DateTime::createFromFormat('d/m', $date) == \DateTime::createFromFormat('d/m', $this->currentDate))
+            // test sur heure dépassée pour réservation à la demi-journée le jour même
+        ) {// ajouter le nb de reservation test dans le controleur
+            return false;
+        } else {
+            return true;
+        }
     }
 }

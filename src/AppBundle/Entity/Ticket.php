@@ -13,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Ticket
 {
+    const PRIX_BILLET_ENFANT = 4;
+    const PRIX_BILLET_NORMAL = 16;
+    const PRIX_BILLET_SENIOR = 12;
+    const PRIX_BILLET_REDUIT = 10;
+    const TAUX_DEMI_JOURNEE= 60/100;
 
     /**
      * @var int
@@ -56,7 +61,6 @@ class Ticket
     private $country;
 
 
-
     /**
      * @var bool
      *
@@ -81,10 +85,6 @@ class Ticket
     private $booking;
 
 
-
-
-
-
     /**
      * Get id
      *
@@ -93,6 +93,16 @@ class Ticket
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
     }
 
     /**
@@ -110,13 +120,13 @@ class Ticket
     }
 
     /**
-     * Get firstName
+     * Get lastName
      *
      * @return string
      */
-    public function getFirstName()
+    public function getLastName()
     {
-        return $this->firstName;
+        return $this->lastName;
     }
 
     /**
@@ -134,37 +144,13 @@ class Ticket
     }
 
     /**
-     * Get lastName
+     * Get country
      *
      * @return string
      */
-    public function getLastName()
+    public function getCountry()
     {
-        return $this->lastName;
-    }
-
-    /**
-     * Set birthDate
-     *
-     * @param \DateTime $birthDate
-     *
-     * @return Ticket
-     */
-    public function setBirthDate($birthDate)
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
-
-    /**
-     * Get birthDate
-     *
-     * @return \DateTime
-     */
-    public function getBirthDate()
-    {
-        return $this->birthDate;
+        return $this->country;
     }
 
     /**
@@ -182,39 +168,13 @@ class Ticket
     }
 
     /**
-     * Get country
+     * Get booking
      *
-     * @return string
+     * @return \AppBundle\Entity\BookingTicket
      */
-    public function getCountry()
+    public function getBooking()
     {
-        return $this->country;
-    }
-
-
-
-    /**
-     * Set discount
-     *
-     * @param boolean $discount
-     *
-     * @return Ticket
-     */
-    public function setDiscount($discount)
-    {
-        $this->discount = $discount;
-
-        return $this;
-    }
-
-    /**
-     * Get discount
-     *
-     * @return bool
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
+        return $this->booking;
     }
 
     /**
@@ -232,13 +192,36 @@ class Ticket
     }
 
     /**
-     * Get booking
+     * Get price
      *
-     * @return \AppBundle\Entity\BookingTicket
+     * @return string
      */
-    public function getBooking()
+    public function getPrice()
     {
-        return $this->booking;
+        $booking=new BookingTicket();
+        $price = $this->price;
+        $age = $this->getAge();
+        $discount = $this->getDiscount();
+        $daylong=$booking->getDayLong();
+        if ($age > 12 && $age < 60) {
+            $price = self::PRIX_BILLET_NORMAL;
+        }
+        if ($age < 4) {
+            $price = 0;
+        }
+        if ($age >= 4 && $age <= 12) {
+            $price = self::PRIX_BILLET_ENFANT;
+        }
+        if ($age>=60){
+            $price=self::PRIX_BILLET_SENIOR;
+        }
+        if ($discount && ($age>12 && $age<60)){
+            $price=self::PRIX_BILLET_REDUIT;
+        }
+        if (!$daylong){
+            $price=$price*self::TAUX_DEMI_JOURNEE;
+        }
+        return $price;
     }
 
     /**
@@ -255,13 +238,58 @@ class Ticket
         return $this;
     }
 
-    /**
-     * Get price
-     *
-     * @return string
-     */
-    public function getPrice()
+    public function getAge()
     {
-        return $this->price;
+        $age = $this->getBirthDate()->diff(new \DateTime())->y;
+        return $age;
+
+    }
+
+    /**
+     * Get birthDate
+     *
+     * @return \DateTime
+     */
+    public function getBirthDate()
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * Set birthDate
+     *
+     * @param \DateTime $birthDate
+     *
+     * @return Ticket
+     */
+    public function setBirthDate($birthDate)
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return bool
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * Set discount
+     *
+     * @param boolean $discount
+     *
+     * @return Ticket
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+
+        return $this;
     }
 }

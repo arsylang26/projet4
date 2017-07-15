@@ -71,8 +71,11 @@ class BookingTicketController extends Controller
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
         //ajouter ici les calculs du prix de chaque billet et le calcul du cumul des prix des billets
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
+            $price=$ticket->getPrice();
             return $this->redirectToRoute("recapBooking");
         }
 
