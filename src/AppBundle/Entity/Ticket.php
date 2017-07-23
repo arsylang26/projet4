@@ -17,7 +17,7 @@ class Ticket
     const PRIX_BILLET_NORMAL = 16;
     const PRIX_BILLET_SENIOR = 12;
     const PRIX_BILLET_REDUIT = 10;
-    const TAUX_DEMI_JOURNEE= 60/100;
+    const TAUX_DEMI_JOURNEE = 60 / 100;
 
     /**
      * @var int
@@ -76,6 +76,12 @@ class Ticket
 
     private $price;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ticket_code", type="string")
+     */
+    private $ticketCode;
 
     /**
      * @var BookingTicket
@@ -84,7 +90,16 @@ class Ticket
      */
     private $booking;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
 
+
+        $this->ticketCode = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
+
+    }
     /**
      * Get id
      *
@@ -198,11 +213,11 @@ class Ticket
      */
     public function getPrice()
     {
-        $booking=new BookingTicket();
+        $booking = new BookingTicket();
         $price = $this->price;
         $age = $this->getAge();
         $discount = $this->getDiscount();
-        $daylong=$booking->getDayLong();
+        $daylong = $booking->getDayLong();
         if ($age > 12 && $age < 60) {
             $price = self::PRIX_BILLET_NORMAL;
         }
@@ -212,14 +227,14 @@ class Ticket
         if ($age >= 4 && $age <= 12) {
             $price = self::PRIX_BILLET_ENFANT;
         }
-        if ($age>=60){
-            $price=self::PRIX_BILLET_SENIOR;
+        if ($age >= 60) {
+            $price = self::PRIX_BILLET_SENIOR;
         }
-        if ($discount && ($age>12 && $age<60)){
-            $price=self::PRIX_BILLET_REDUIT;
+        if ($discount && ($age > 12 && $age < 60)) {
+            $price = self::PRIX_BILLET_REDUIT;
         }
-        if (!$daylong){
-            $price=$price*self::TAUX_DEMI_JOURNEE;
+        if (!$daylong) {
+            $price = $price * self::TAUX_DEMI_JOURNEE;
         }
         return $price;
     }
@@ -289,6 +304,19 @@ class Ticket
     public function setDiscount($discount)
     {
         $this->discount = $discount;
+
+        return $this;
+    }
+
+
+    public function getTicketCode()
+    {
+        return $this->ticketCode;
+    }
+
+    public function setTicketCode($ticketcode)
+    {
+        $this->ticketCode =$ticketcode;
 
         return $this;
     }

@@ -8,9 +8,11 @@
     <link rel="shortcut icon" href="{{ asset('bundles/app/pictures/icone.jpg') }}" type="image/x-icon"/>
     {% block stylesheets %}
         {# On charge le CSS de bootstrap depuis le site directement #}
+
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css">
         <link rel="stylesheet" href="{{ asset('bundles/app/css/styleBooking.css') }}">
-       <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">-->
+
     {% endblock %}
 </head>
 
@@ -35,7 +37,7 @@
     {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset('bundles/app/js/perso.js') }}"></script>
 
 {% endblock %}

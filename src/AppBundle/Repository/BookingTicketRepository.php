@@ -1,8 +1,11 @@
 <?php
 
 namespace AppBundle\Repository;
-    use Doctrine\ORM\EntityRepository;
-    use Doctrine\ORM\QueryBuilder;
+
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use AppBundle\Entity\BookingTicket;
+
 /**
  * BookingTicketRepository
  *
@@ -12,23 +15,35 @@ namespace AppBundle\Repository;
 class BookingTicketRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function myFindAll()
+    public function isBookingDateOk(\DateTime $date)
     {
+        $currentDate = new \DateTime();
+        $booking = new BookingTicket();
+        if (in_array($date->format('d/m'), BookingTicket::OFF_DAYS) // test sur jours fériés
+            || ($date->format('l')) == BookingTicket::WEEKLY_CLOSING_DAY // test sur jour fermeture hebdo
+            || (($date->format('H:i') > BookingTicket::HALF_DAY_HOUR)
+            && ($date->format('d/m')) == $currentDate->format('d/m'))
+            // test sur heure dépassée pour réservation à la demi-journée le jour même
 
 
-        $queryBuilder = $this->createQueryBuilder('b');
-        // On n'ajoute pas de critère ou tri particulier, la construction
-        // de notre requête est finie
-        // On récupère la Query à partir du QueryBuilder
-        $query = $queryBuilder->getQuery();
-        // On récupère les résultats à partir de la Query
-        $results = $query->getResult();
-        // On retourne ces résultats
-        return $results;
+            || ($this->nbBookingPerDate($date->format('d/m')) > 1000) //test sur le nombre de réservations pour ce jour
+        ) {
+            return false;
+        } else {
+            return true;
+        }
     }
+
     public function nbBookingPerDate($date)
     {
-
+        return $this->createQueryBuilder('b')
+            ->select('COUNT(b)')
+            ->where('b.bookingDate = :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getSingleScalarResult();
 
     }
+
+
 }

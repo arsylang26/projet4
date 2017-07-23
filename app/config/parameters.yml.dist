@@ -17,8 +17,8 @@ parameters:
 
    # A secret key that's used to generate certain security-related tokens
       secret: ThisTokenIsNotSoSecretChangeIt
-      stripe_secret_key:sk_test_IL7Mc2TD0tAqA3ZMEtBseOdy
-      stripe_public_key: pk_test_OOaMPXWZJnx5D3mDpkZ5q8V6
+      stripe_secret_key:sk_test_xxxxxxxxxxxxxxxxx
+      stripe_public_key: pk_test_xxxxxxxxxxxxxxxxx
 
    # set to https on production
-      secure_channel: http
+      secure_channel: https

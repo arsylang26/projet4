@@ -37,8 +37,8 @@ services:
 
 
 
-    services:
-        zerobookingdays.validator:
-            class: %register.zerobookingdays.validator.class%
-            tags:
-                - { name: validator.constraint_validator, alias: zerobookingdays_validator }
+
+    zerobookingdays.validator:
+        class: "%register.zerobookingdays.validator.class%"
+        tags:
+            - { name: validator.constraint_validator, alias: zerobookingdays_validator }

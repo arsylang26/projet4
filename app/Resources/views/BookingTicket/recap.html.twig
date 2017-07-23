@@ -1,19 +1,29 @@
 {% extends "::layout.html.twig" %}
 {% block body %}
 
-        <div>
-            <h3>résumé de votre commande</h3>
-            <hr/>
-            {% for ticket in booking.tickets %}
-                <p>Une entrée à la {{ booking.dayLong }} à {{ ticket.discount }}</p>
-                <p>Prix :<strong>{{ ticket.price }}</strong></p>
-                <p>Ticket N°: nombre</p>
-                <p>nom: {{ ticket.lastName }} prénom: {{ ticket.firstName }}</p>
-                <p>né(e) le :{{ ticket.birthDate|date("d M Y") }}</p>
-                <p>Pays: {{ ticket.country }}</p>
-                <hr/>
-            {% endfor %}
+    <div>
+        <h3>résumé de votre commande</h3>
+        <hr/>
+        {% set daylong="journée",discount="plein tarif" %}
+        {% for ticket in booking.tickets %}
 
-        </div>
+            {% if not (booking.dayLong) %}
+                {% set daylong="demi-journée" %}
+            {% endif %}
+            {% if (ticket.discount) %}
+                {% set discount="demi-tarif" %}
+            {% endif %}
+            <p>Une entrée à la {{ dayLong }} à {{ discount }}</p>
+            <p>Prix :<strong>{{ ticket.ticketPrice }}</strong></p>
+            <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
+            <p>nom: {{ ticket.lastName|upper }} prénom: {{ ticket.firstName|title }}</p>
+            <p>né(e) le :{{ ticket.birthDate|date("d M Y") }}</p>
+            <p>Pays: {{ ticket.country }}</p>
+            <a class="btn btn-danger" href="#" role="button">Supprimer</a>
+            <a class="btn btn-primary" href="#" role="button">Modifier</a>
+            <hr/>
+        {% endfor %}
+        <input type="submit"/>
+    </div>
 
 {% endblock %}

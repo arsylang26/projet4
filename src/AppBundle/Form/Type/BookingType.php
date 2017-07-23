@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\BookingTicket;
@@ -24,31 +25,31 @@ class BookingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-       // for($i=1;$i<=BookingTicket::NB_MAX_TICKET;$i++)
-       // {
+        // for($i=1;$i<=BookingTicket::NB_MAX_TICKET;$i++)
+        // {
         //   $listNb[$i] = $i;
-       // }
+        // }
         $builder
-
             ->add('email', RepeatedType::class, array(
                 'type' => EmailType::class,
                 'invalid_message' => 'Les adresses courriels sont différentes.',
                 'options' => array('attr' => array('class' => 'email-field')),
                 'required' => true,
-                'first_options'  => array('label' => 'Votre adresse courriel'),
+                'first_options' => array('label' => 'Votre adresse courriel'),
                 'second_options' => array('label' => 'Confirmer votre adresse courriel')))
-            ->add('bookingDate', DateType::class,array('label'=>'Date de réservation','format'=>'dd MMMM yyyy','widget'=>'single_text',
-                'attr' => ['class' => 'js-datepicker'],'html5' => false))//affichage de la date courante par défaut
-            ->add('nbTicket', ChoiceType::class,array('choices'=>array_combine(range(1,BookingTicket::NB_MAX_TICKET),range(1,BookingTicket::NB_MAX_TICKET)),'label'=>'nombre de tickets souhaité'))
-            ->add('dayLong',ChoiceType::class,array('choices'=>array('journée'=>BookingTicket::TYPE_DAY, 'demi-journée'=>BookingTicket::TYPE_HALF_DAY),
-                'label'=>'billet journée/demi-journée'));
+            ->add('bookingDate', DateType::class,
+                array('label' => 'Date de réservation', 'format' => 'dd-MM-yyyy', 'widget' => 'single_text',
+                'attr' => ['class' => 'js-datepicker'], 'html5' => false))//affichage de la date courante par défaut
+            ->add('nbTicket', ChoiceType::class, array('choices' => array_combine(range(1, BookingTicket::NB_MAX_TICKET), range(1, BookingTicket::NB_MAX_TICKET)), 'label' => 'nombre de tickets souhaité'))
+            ->add('dayLong', ChoiceType::class, array('choices' => array('journée' => BookingTicket::TYPE_DAY, 'demi-journée' => BookingTicket::TYPE_HALF_DAY),
+                'label' => 'billet journée/demi-journée'));
 
     }
 
-public function configureOptions(OptionsResolver $resolver)
-{
-$resolver->setDefaults(array(
-'data_class' => BookingTicket::class,
-));
-}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => BookingTicket::class,
+        ));
+    }
 }

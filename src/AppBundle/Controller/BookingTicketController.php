@@ -107,21 +107,30 @@ class BookingTicketController extends Controller
         $em = $this->getDoctrine()->getManager();
         $booking = $em->getRepository('AppBundle:BookingTicket');
         $em->flush();
+        return $this->render('payment.html.twig',array('booking'=>$booking));
     }
 
     /**
      * @Route("/confirmOrder", name="sendEmail")
      */
-    public function sendEmailAction($name, \Swift_Mailer $mailer) // envoi du courriel de confirmation avec résumé de la commande
+    public function sendEmailAction($booking,\Swift_Mailer $mailer) // envoi du courriel de confirmation avec résumé de la commande
     {
 
         $message = (new \Swift_Message('Vos tickets d\'entrée au Musée du Louvre'))
             ->setFrom('reservation@louvre.fr')
-            ->setTo('fabien.mallier@orange.fr')
-            ->setBody($this->renderView('BookingTicket/email.html.twig',array('name' => $name)),'text/html');
+            ->setTo($booking->getEmail())
+            ->setBody($this->renderView('BookingTicket/email.html.twig',array('booking' => $booking)),'text/html');
         $mailer->send($message);
 
+        return $this->redirectToRoute("sendingOk");
 
-        return $this->renderView('BookingTicket/email.html.twig');
+    }
+/**
+* @Route("/confirmation", name="sendingOk")
+*/
+    public function sendingOKAction(Request $request)
+    {
+        $booking = $request->getSession()->get("booking");
+        return $this->render('BookingTicket/sendingconfirmation.html.twig', array('booking' => $booking));
     }
 }

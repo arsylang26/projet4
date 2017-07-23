@@ -1,27 +1,26 @@
 <h3>Musée du louvre</h3>
-<img src="{{ asset('bundles/app/pictures/icone.jpg')}}">
+<img src="{{ asset('bundles/app/pictures/icone.jpg')}}" alt="logo musée du Louvre" width="300"/>
 
 <p>Bonjour cher (chère) client (e), </p>
 
 <p>vous avez commandé {{BookingTicket.nbTicket}} sur notre site web.</p>
 <p>En voici la liste :</p>
-$tickets=array("?"=>"?");
+
 {%for ticket in tickets%}
 <p>Nom et prénom:<strong>{{ticket.lastName|e}} {{ticket.firstName|e}}</strong></p>
 <p>né(e) le:{{ticket.birthDate|e}}</p>
 <p>Pays:{{ticket.country|e}}</p>
-<p>Prix:{{ticket.price|e}}</p>
+<p>Prix:{{ticket.ticketPrice|e}}</p>
 {%if ticket.discount|e%}
-    <p>billet à tarif réduit. Vous munir des justificatifs pour l'entrée au musée</p>
+    <p id="evidence">billet à tarif réduit. Vous munir des justificatifs pour l'entrée au musée</p>
 {%endif%}
-{{%set $dayLong="journée"%}
-{{%if !ticket.daylong|e %}}
-[%set $daylong="demi-journée"%]
+{{% set dayLong="journée"%}
+{{%if not ticket.dayLong|e %}}
+[%set dayLong="demi-journée"%]
 {{%endif%}}
 
-<p>Pour une entrée à la {{$dayLong}} le <strong>{{ticket.bookingDate|e}}</strong></p>
-{%set $code=substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,15)%}//un code alphanumérique aléatoire de 15 caractères
-<p>Code billet: {{$code}}</p>
+<p>Pour une entrée à la {{dayLong}} le <strong>{{ticket.bookingDate|e}}</strong></p>
+<p>Code billet: {{ticket.ticketCode}}</p>
 <hr />
 {%endfor%}
 <p>Nous vous remercions de votre commande et vous souhaitons une agréable visite.</p>

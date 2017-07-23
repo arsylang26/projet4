@@ -8,13 +8,21 @@
                     <h1 class="checkout-header">Paiement</h1>
                 </div>
                 <div class="col-xs-12 col-sm-6">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td class="col-xs-1 checkout-total">Total à régler:</td>
+                            <td class="col-xs-3 info checkout-total">{{ bookingTicket.orderAmount }} €</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="col-xs-12 col-sm-6">
                     <form action="" method="POST">
                         <script
                                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="pk_test_OOaMPXWZJnx5D3mDpkZ5q8V6"
-                                data-amount="{{ bookingTicket.total * 100 }}"
+                                data-key="{{ stripe_public_key }}"
+                                data-amount="{{ bookingTicket.orderAmount* 100 }}"
                                 data-name="Musee du Louvre"
                                 data-description="Widget"
                                 data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"

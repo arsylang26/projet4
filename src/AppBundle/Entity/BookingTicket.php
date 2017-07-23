@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\ZeroBookingDays;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,8 +23,8 @@ class BookingTicket
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
     const OFF_DAYS = array('1/05', '1/11', '25/12');// les jours fériés
     const MAX_BOOKING_IN_A_DAY = 1000;
-    const WEEKLY_CLOSING_DAY = 'tuesday';
-    const HALF_DAY_HOUR = 14; // heure à partir de laquelle on ne peut plus réserver de billet journée le jour même
+    const WEEKLY_CLOSING_DAY = 'Tuesday';
+    const HALF_DAY_HOUR = '14:00'; // heure à partir de laquelle on ne peut plus réserver de billet journée le jour même
 
     /**
      * @var int
@@ -53,6 +54,7 @@ class BookingTicket
      * @var \DateTime
      * @ORM\Column(name="bookingDate", type="date")
      * @Assert\GreaterThanOrEqual("today")
+     * @ZeroBookingDays()
      */
     private $bookingDate;
 
@@ -94,6 +96,7 @@ class BookingTicket
         $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
         $this->currentDate = new \DateTime();
         $this->bookingDate = new \DateTime();
+
 
     }
 
@@ -285,17 +288,4 @@ class BookingTicket
         return $this;
     }
 
-    public function isBookingDateOk($date)
-    {
-        if (in_array(\DateTime::createFromFormat('d/m', $date), self::OFF_DAYS) // test sur jours fériés
-            or (\DateTime::createFromFormat('l', $date) == self::WEEKLY_CLOSING_DAY) // test sur jour fermeture hebdo
-            or ((\DateTime::createFromFormat('H:i', new \DateTime())) > self::HALF_DAY_HOUR)
-            and (\DateTime::createFromFormat('d/m', $date) == \DateTime::createFromFormat('d/m', $this->currentDate))
-            // test sur heure dépassée pour réservation à la demi-journée le jour même
-        ) {// ajouter le nb de reservation test dans le controleur
-            return false;
-        } else {
-            return true;
-        }
-    }
 }
