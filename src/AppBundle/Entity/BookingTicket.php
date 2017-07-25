@@ -2,6 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\HalfDay;
+use AppBundle\Validator\NoBookingDay;
+use AppBundle\Validator\OffDays;
+use AppBundle\Validator\OverBooking;
+use AppBundle\Validator\WeeklyClosingDay;
 use AppBundle\Validator\ZeroBookingDays;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,10 +26,7 @@ class BookingTicket
     const TYPE_DAY = true;
     const TYPE_HALF_DAY = false;
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
-    const OFF_DAYS = array('1/05', '1/11', '25/12');// les jours fériés
-    const MAX_BOOKING_IN_A_DAY = 1000;
-    const WEEKLY_CLOSING_DAY = 'Tuesday';
-    const HALF_DAY_HOUR = '14:00'; // heure à partir de laquelle on ne peut plus réserver de billet journée le jour même
+
 
     /**
      * @var int
@@ -53,8 +55,13 @@ class BookingTicket
     /**
      * @var \DateTime
      * @ORM\Column(name="bookingDate", type="date")
-     * @Assert\GreaterThanOrEqual("today")
-     * @ZeroBookingDays()
+     * @Assert\DateTime(message="le format de la date n'est pas valide")
+     * @Assert\GreaterThanOrEqual("today",message="la date doit être ultérieure à aujourd'hui")
+     * @HalfDay()
+     * @OffDays()
+     * @OverBooking()
+     * @WeeklyClosingDay()
+     * @NoBookingDay()
      */
     private $bookingDate;
 
@@ -175,7 +182,7 @@ class BookingTicket
      *
      * @return BookingTicket
      */
-    public function setBookingDate($bookingDate)
+    public function setBookingDate(\DateTime $bookingDate)
     {
         $this->bookingDate = $bookingDate;
 
@@ -215,6 +222,11 @@ class BookingTicket
     {
         return $this->dayLong;
     }
+    public function getDayLongLabel()
+    {
+        return ($this->dayLong) ? "Journée" : "Demi-journée";
+    }
+
 
     /**
      * Set dayLong
@@ -271,6 +283,7 @@ class BookingTicket
      */
     public function getOrderAmount()
     {
+
         return $this->orderAmount;
     }
 
@@ -288,4 +301,13 @@ class BookingTicket
         return $this;
     }
 
+    public function computeAmount(){
+        $orderAmount = 0;
+        foreach ($this->tickets as $ticket) {
+            $orderAmount += $ticket->computePrice();
+
+        }
+        $this->setOrderAmount($orderAmount);
+        return $this->orderAmount;
+    }
 }

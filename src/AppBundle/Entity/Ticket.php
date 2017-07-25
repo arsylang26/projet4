@@ -69,7 +69,7 @@ class Ticket
     private $discount;
 
     /**
-     * @var bool
+     * @var float
      *
      * @ORM\Column(name="price", type="decimal", nullable=true)
      */
@@ -213,30 +213,7 @@ class Ticket
      */
     public function getPrice()
     {
-        $booking = new BookingTicket();
-        $price = $this->price;
-        $age = $this->getAge();
-        $discount = $this->getDiscount();
-        $daylong = $booking->getDayLong();
-        if ($age > 12 && $age < 60) {
-            $price = self::PRIX_BILLET_NORMAL;
-        }
-        if ($age < 4) {
-            $price = 0;
-        }
-        if ($age >= 4 && $age <= 12) {
-            $price = self::PRIX_BILLET_ENFANT;
-        }
-        if ($age >= 60) {
-            $price = self::PRIX_BILLET_SENIOR;
-        }
-        if ($discount && ($age > 12 && $age < 60)) {
-            $price = self::PRIX_BILLET_REDUIT;
-        }
-        if (!$daylong) {
-            $price = $price * self::TAUX_DEMI_JOURNEE;
-        }
-        return $price;
+       return $this->price;
     }
 
     /**
@@ -320,4 +297,35 @@ class Ticket
 
         return $this;
     }
+    public function computePrice()
+    {
+        $booking = $this->getBooking();
+        $price = $this->price;
+        $age = $this->getAge();
+        $discount = $this->getDiscount();
+        $daylong = $booking->getDayLong();
+        if ($age >=12 && $age < 60) {
+            $price = self::PRIX_BILLET_NORMAL;
+        }
+        elseif ($age < 4) {
+            $price = 0;
+        }
+        elseif ($age >= 4 && $age < 12) {
+            $price = self::PRIX_BILLET_ENFANT;
+        }
+        else {
+            $price = self::PRIX_BILLET_SENIOR;
+        }
+
+        if ($discount && ($age >= 12 && $age < 60)) {
+            $price = self::PRIX_BILLET_REDUIT;
+        }
+
+       if (!$daylong) {
+            $price = $price * self::TAUX_DEMI_JOURNEE;
+        }
+        $this->setPrice($price);
+        return $this->price;
+    }
+
 }

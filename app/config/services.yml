@@ -2,8 +2,11 @@
 # https://symfony.com/doc/current/service_container.html
 parameters:
     #parameter_name: value
-     register.zerobookingdays.validator.class: AppBundle\Validator\ZeroBookingDays
-
+#     register.halfday.validator.class: AppBundle\Validator\HalfDay
+#     register.offdays.validator.class: AppBundle\Validator\OffDays
+#     register.overbooking.validator.class: AppBundle\Validator\OverBooking
+#     register.weeklyclosingday.validator.class: AppBundle\Validator\WeeklyClosingDay
+#     #register.nobookingday.validator.class: AppBundle\Validator\NoBookingDay
 services:
     # BookingTicket configuration for services in *this* file
     _defaults:
@@ -38,7 +41,27 @@ services:
 
 
 
-    zerobookingdays.validator:
-        class: "%register.zerobookingdays.validator.class%"
-        tags:
-            - { name: validator.constraint_validator, alias: zerobookingdays_validator }
+#    #halfday.validator:
+#        class: "%register.halfday.validator.class%"
+#        tags:
+#            - { name: validator.constraint_validator, alias: halfday_validator }
+#
+#    offdays.validator:
+#        class: "%register.offdays.validator.class%"
+#        tags:
+#            - { name: validator.constraint_validator, alias: offdays_validator }
+#
+#    overbooking.validator:
+#        class: "%register.overbooking.validator.class%"
+#        tags:
+#            - { name: validator.constraint_validator, alias: overbooking_validator }
+#
+#    weeklyclosingday.validator:
+#        class: "%register.weeklyclosingday.validator.class%"
+#        tags:
+#            - { name: validator.constraint_validator, alias: weeklyclosingday_validator }
+#
+#    nobookingday.valdator:
+#        class: "%register.nobookingday.validator.class%"
+#        tags:
+#            - { name: validator.constraint_validator, alias: nobookingday_validator }

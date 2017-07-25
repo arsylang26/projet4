@@ -29,10 +29,11 @@ class BookingTicketController extends Controller
         $session->set("booking", $booking);
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
+        dump($booking);
         //ajouter ici le test sur la date de réservation
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($booking);
+
+
             $request->getSession()->getFlashBag()->add('notice', 'votre demande va se poursuivre');
             return $this->redirectToRoute("ticketOrder");
 

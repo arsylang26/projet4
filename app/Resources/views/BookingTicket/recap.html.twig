@@ -7,14 +7,9 @@
         {% set daylong="journée",discount="plein tarif" %}
         {% for ticket in booking.tickets %}
 
-            {% if not (booking.dayLong) %}
-                {% set daylong="demi-journée" %}
-            {% endif %}
-            {% if (ticket.discount) %}
-                {% set discount="demi-tarif" %}
-            {% endif %}
-            <p>Une entrée à la {{ dayLong }} à {{ discount }}</p>
-            <p>Prix :<strong>{{ ticket.ticketPrice }}</strong></p>
+
+            <p>Une entrée à la {{ dayLongLabel }} à {{ ticket.discountLabel }}</p>
+            <p>Prix :<strong>{{ ticket.computePrice }}</strong></p>
             <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
             <p>nom: {{ ticket.lastName|upper }} prénom: {{ ticket.firstName|title }}</p>
             <p>né(e) le :{{ ticket.birthDate|date("d M Y") }}</p>

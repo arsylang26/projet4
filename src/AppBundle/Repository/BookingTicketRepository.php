@@ -15,25 +15,6 @@ use AppBundle\Entity\BookingTicket;
 class BookingTicketRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function isBookingDateOk(\DateTime $date)
-    {
-        $currentDate = new \DateTime();
-        $booking = new BookingTicket();
-        if (in_array($date->format('d/m'), BookingTicket::OFF_DAYS) // test sur jours fériés
-            || ($date->format('l')) == BookingTicket::WEEKLY_CLOSING_DAY // test sur jour fermeture hebdo
-            || (($date->format('H:i') > BookingTicket::HALF_DAY_HOUR)
-            && ($date->format('d/m')) == $currentDate->format('d/m'))
-            // test sur heure dépassée pour réservation à la demi-journée le jour même
-
-
-            || ($this->nbBookingPerDate($date->format('d/m')) > 1000) //test sur le nombre de réservations pour ce jour
-        ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public function nbBookingPerDate($date)
     {
         return $this->createQueryBuilder('b')

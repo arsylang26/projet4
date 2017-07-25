@@ -25,10 +25,7 @@ class BookingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // for($i=1;$i<=BookingTicket::NB_MAX_TICKET;$i++)
-        // {
-        //   $listNb[$i] = $i;
-        // }
+
         $builder
             ->add('email', RepeatedType::class, array(
                 'type' => EmailType::class,
