@@ -3,6 +3,7 @@
 namespace AppBundle\Validator;
 
 
+use AppBundle\Entity\BookingTicket;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,7 +29,7 @@ const WEEKLY_CLOSING_DAY='Tuesday';
     public function isOk(\DateTime $date)
     {
 
-        if ($date->format('l') == WeeklyClosingDayValidator::WEEKLY_CLOSING_DAY
+        if ($date->format('l') == BookingTicket::WEEKLY_CLOSING_DAY
         ) {
             return false;
         } else {

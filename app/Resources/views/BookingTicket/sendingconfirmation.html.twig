@@ -1,7 +1,7 @@
 {% extends "::layout.html.twig" %}
 {% block body %}
-    <h3>Un courriel de confirmation de commande vous a été envoyé à {{ bookingTicket.email }} avec vos billets</h3>
+    <h3>Un courriel de confirmation de commande vous a été envoyé à avec vos billets</h3>
     <p>
-        <a href="#" class="btn btn-sm btn-primary">retour à l'accueil </a>
+        <a href="/{{ path('/') }}" class="btn btn-sm btn-primary">retour à l'accueil </a>
     </p>
 {% endblock %}

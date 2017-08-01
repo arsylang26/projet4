@@ -8,8 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Ticket
  *
- * @ORM\Table(name="t_ticket")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TTicketRepository")
+ * @ORM\Table(name="ticket")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TicketRepository")
  */
 class Ticket
 {
@@ -18,7 +18,7 @@ class Ticket
     const PRIX_BILLET_SENIOR = 12;
     const PRIX_BILLET_REDUIT = 10;
     const TAUX_DEMI_JOURNEE = 60 / 100;
-
+//const AGES_DEMI_TARIF=range(12,59,1);
     /**
      * @var int
      *
@@ -33,7 +33,7 @@ class Ticket
      *
      * @ORM\Column(name="firstName", type="string", length=50)
      * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="prénom trop long")
-     * @Assert\Type(type="string", message="format du prénom bizzaroïde: {{ value }} n'est pas valide.")
+     * @Assert\Type(type="alpha", message="format du prénom bizzaroïde: {{ value }} n'est pas valide.")
      */
     private $firstName;
 
@@ -42,7 +42,7 @@ class Ticket
      *
      * @ORM\Column(name="lastName", type="string", length=50)
      * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="patronyme trop long")
-     * @Assert\Type(type="integer", message="format du nom bizzaroïde: {{ value }} n'est pass valide.")
+     * @Assert\Type(type="alpha", message="format du nom bizzaroïde: {{ value }} n'est pas valide.")
      */
     private $lastName;
 
@@ -50,6 +50,8 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="birthDate", type="date")
+     * @Assert\Date(message="le format de la date n'est pas valide")
+     * @Assert\LessThan("today",message="Vous devez être né(e) pour commander ! ")
      */
     private $birthDate;
 
@@ -300,10 +302,10 @@ class Ticket
     public function computePrice()
     {
         $booking = $this->getBooking();
-        $price = $this->price;
+
         $age = $this->getAge();
         $discount = $this->getDiscount();
-        $daylong = $booking->getDayLong();
+        $dayLong = 1;//$booking->getDayLong();
         if ($age >=12 && $age < 60) {
             $price = self::PRIX_BILLET_NORMAL;
         }
@@ -321,11 +323,14 @@ class Ticket
             $price = self::PRIX_BILLET_REDUIT;
         }
 
-       if (!$daylong) {
+       if (!$dayLong) {
             $price = $price * self::TAUX_DEMI_JOURNEE;
         }
         $this->setPrice($price);
         return $this->price;
     }
-
+    public function getDiscountLabel()
+    {
+        return ($this->discount) ? "demi-tarif" : "plein tarif";
+    }
 }

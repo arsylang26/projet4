@@ -29,7 +29,7 @@ class BookingTicketController extends Controller
         $session->set("booking", $booking);
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
-        dump($booking);
+
         //ajouter ici le test sur la date de réservation
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -59,23 +59,22 @@ class BookingTicketController extends Controller
         $booking = $request->getSession()->get("booking");
         $ticket = new Ticket();
 
-        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {
-            if(count($booking->getTickets())<$booking->getNbTicket())
-            {
-                $booking->addTicket($ticket);
-            }
-            elseif (count($booking->getTickets())>$booking->getNbTicket()){
-                $booking->removeTicket($booking->getTickets()->last());
-            }
-
-        }
+//        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {
+//            if(count($booking->getTickets())<$booking->getNbTicket())
+//            {
+//                $booking->addTicket($ticket);
+//            }
+//            elseif (count($booking->getTickets())>$booking->getNbTicket()){
+//                $booking->removeTicket($booking->getTickets()->last());
+//            }
+//
+//        }
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
-        //ajouter ici les calculs du prix de chaque billet et le calcul du cumul des prix des billets
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $request->getSession()->getFlashBag()->add('notice', 'votre commande est validée');
+
             $price=$ticket->getPrice();
             return $this->redirectToRoute("recapBooking");
         }
@@ -84,7 +83,7 @@ class BookingTicketController extends Controller
         // On passe la méthode createView() du formulaire à la vue
         // afin qu'elle puisse afficher le formulaire toute seule
         return $this->render('BookingTicket/page2.html.twig', array(
-            'form' => $form->createView(),));
+            'form' => $form->createView()));
     }
 
 
@@ -95,21 +94,20 @@ class BookingTicketController extends Controller
     {
         $booking = $request->getSession()->get("booking");
 
-
         return $this->render('BookingTicket/recap.html.twig', array('booking' => $booking));
 
     }
 
-    /**
-     * @Route("/payment", name="pay_with_stripe")
-     */
-    public function paymentAction() // paiement de la commande avec stripe
-    {
-        $em = $this->getDoctrine()->getManager();
-        $booking = $em->getRepository('AppBundle:BookingTicket');
-        $em->flush();
-        return $this->render('payment.html.twig',array('booking'=>$booking));
-    }
+//    /**
+//     * @Route("/payment", name="pay_with_stripe")
+//     */
+//    public function paymentAction() // paiement de la commande avec stripe
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//        $booking = $em->getRepository('AppBundle:BookingTicket');
+//        $em->flush();
+//        return $this->render('BookingTicket/payment.html.twig',array('booking'=>$booking));
+//    }
 
     /**
      * @Route("/confirmOrder", name="sendEmail")

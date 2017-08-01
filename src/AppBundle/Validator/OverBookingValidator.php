@@ -3,6 +3,7 @@
 namespace AppBundle\Validator;
 
 
+use AppBundle\Entity\BookingTicket;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -38,7 +39,7 @@ class OverBookingValidator extends ConstraintValidator
     {
         $nbTicketsold = $this->em->getRepository('AppBundle:BookingTicket')->nbBookingPerDate($date->format('d/m'));
         $nbTicketBooking = $this->context->getRoot()->getData()->getNbTicket();
-        if (($nbTicketBooking + $nbTicketsold) > OverBooking::MAX_BOOKING_IN_A_DAY) {
+        if (($nbTicketBooking + $nbTicketsold) > BookingTicket::MAX_BOOKING_IN_A_DAY) {
             return false;
         } else {
             return true;

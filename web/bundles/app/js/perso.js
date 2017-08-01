@@ -10,7 +10,7 @@ $.fn.datepicker.dates['fr'] = {
     today: "Aujourd'hui",
     clear: "effacer",
     format: "dd-mm-yyyy",
-    titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+    titleFormat: "MM yyyy",
     weekStart: 1
 };
 $('.js-datepicker').datepicker(
@@ -21,5 +21,14 @@ $('.js-datepicker').datepicker(
         startDate: 'd',
         datesDisabled: ['1-05-2018', '1-11-2017', '25-12-2017'],
         daysOfWeekDisabled: '0,2'
+    }
+);
+$('.js-datepicker-birthdate').datepicker(
+    {
+        format: 'dd-mm-yyyy',
+        language: 'fr',
+        startView: 'decade',
+        startDate: '-100y',
+        endDate: '-1m'
     }
 );

@@ -3,6 +3,7 @@
 namespace AppBundle\Validator;
 
 
+use AppBundle\Entity\BookingTicket;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,7 +30,7 @@ class HalfDayValidator extends ConstraintValidator
     {
         $currentDate = new \DateTime();
         $today = $currentDate->format('d/m/Y');
-        if (($date->format('H:i') > HalfDay::HALF_DAY_HOUR)
+        if (($date->format('H:i') > BookingTicket::HALF_DAY_HOUR)
             && ($date->format('d/m/Y')) == $today
         ) {
             return false;

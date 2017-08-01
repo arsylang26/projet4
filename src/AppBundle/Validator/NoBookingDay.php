@@ -2,6 +2,7 @@
 
 namespace AppBundle\Validator;
 
+use AppBundle\Entity\BookingTicket;
 use Symfony\Component\Validator\Constraint;
 
 
@@ -10,6 +11,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class NoBookingDay extends Constraint
 {
-    const NO_BOOKING_DAY='Sunday';
-    public $message = "{{bookingDate}} : Pas de réservation possible le dimanche";
+
+    public $message = "{{bookingDate}} : Pas de réservation possible le ".BookingTicket::NO_BOOKING_DAY;
 }

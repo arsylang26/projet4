@@ -3,6 +3,7 @@
 namespace AppBundle\Validator;
 
 
+use AppBundle\Entity\BookingTicket;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,7 +29,7 @@ class NoBookingDayValidator extends ConstraintValidator
     public function isOk(\DateTime $date)
     {
 
-        if ($date->format('l') == NoBookingDay::NO_BOOKING_DAY
+        if ($date->format('l') == BookingTicket::NO_BOOKING_DAY
         ) {
             return false;
         } else {

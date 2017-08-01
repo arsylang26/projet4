@@ -13,7 +13,7 @@ body {
 }
 
 #content {
-    opacity: .8;
+    opacity:.9;
     z-index: 1;
     min-height: 100%; /* 100% de la hauteur du view-port*/
     background: #e6eeff;
@@ -25,9 +25,9 @@ body {
     color:red;
 }
 
-label.required:before {
-    content: "* ";
-}
+/*label.required:before {*/
+    /*content: "* ";*/
+/*}*/
 
 #content h3 {
     text-align: center;
@@ -38,4 +38,25 @@ footer {
     z-index: 1;
     text-align: center;
     background: #e6eeff;
+}
+.recap tr{
+    border: 2px solid black;
+
+}
+.recap td{
+    background-color: papayawhip;
+}
+.notice{
+    color:red;
+    font-style: italic;
+}
+form li{
+    color:red;
+    display:inline;
+
+}
+
+#orderAmount{
+    text-align: center;
+    font-size: large;
 }

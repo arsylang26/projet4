@@ -7,7 +7,7 @@ use AppBundle\Validator\NoBookingDay;
 use AppBundle\Validator\OffDays;
 use AppBundle\Validator\OverBooking;
 use AppBundle\Validator\WeeklyClosingDay;
-use AppBundle\Validator\ZeroBookingDays;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,8 +26,11 @@ class BookingTicket
     const TYPE_DAY = true;
     const TYPE_HALF_DAY = false;
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
-
-
+    const HALF_DAY_HOUR = '14:00';
+    const OFF_DAYS = array('1/05','1/11','25/12');
+    const NO_BOOKING_DAY = 'Sunday';
+    const MAX_BOOKING_IN_A_DAY = 1000;
+    const WEEKLY_CLOSING_DAY='Tuesday';
     /**
      * @var int
      *
@@ -76,7 +79,7 @@ class BookingTicket
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Ticket",mappedBy="booking",cascade={"persist"})
-     *
+     * @Assert\Valid()
      */
     private $tickets;
 
@@ -222,11 +225,6 @@ class BookingTicket
     {
         return $this->dayLong;
     }
-    public function getDayLongLabel()
-    {
-        return ($this->dayLong) ? "Journée" : "Demi-journée";
-    }
-
 
     /**
      * Set dayLong
@@ -240,6 +238,11 @@ class BookingTicket
         $this->dayLong = $dayLong;
 
         return $this;
+    }
+
+    public function getDayLongLabel()
+    {
+        return ($this->dayLong) ? "journée" : "demi-journée";
     }
 
     /**
@@ -301,7 +304,8 @@ class BookingTicket
         return $this;
     }
 
-    public function computeAmount(){
+    public function computeAmount()
+    {
         $orderAmount = 0;
         foreach ($this->tickets as $ticket) {
             $orderAmount += $ticket->computePrice();

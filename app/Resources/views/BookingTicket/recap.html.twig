@@ -3,22 +3,44 @@
 
     <div>
         <h3>résumé de votre commande</h3>
-        <hr/>
-        {% set daylong="journée",discount="plein tarif" %}
-        {% for ticket in booking.tickets %}
+        <div class="recap table-responsive">
+            <table class="table table-bordered table-striped">
+                {{ dump(booking.tickets) }}
+                {% for key,ticket in booking.tickets %}
 
 
-            <p>Une entrée à la {{ dayLongLabel }} à {{ ticket.discountLabel }}</p>
-            <p>Prix :<strong>{{ ticket.computePrice }}</strong></p>
-            <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
-            <p>nom: {{ ticket.lastName|upper }} prénom: {{ ticket.firstName|title }}</p>
-            <p>né(e) le :{{ ticket.birthDate|date("d M Y") }}</p>
-            <p>Pays: {{ ticket.country }}</p>
-            <a class="btn btn-danger" href="#" role="button">Supprimer</a>
-            <a class="btn btn-primary" href="#" role="button">Modifier</a>
-            <hr/>
-        {% endfor %}
-        <input type="submit"/>
+                    <tr>
+                        <td>
+
+                            <p>Une entrée à la {{ booking.dayLongLabel }} à {{ ticket.discountLabel }}
+                                pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong></p>
+                            <p>Prix :<strong>
+                                    {% if (ticket.computePrice>0) %}
+                                        {{ ticket.computePrice }} €
+                                    {% else %}gratuit
+                                    {% endif %}
+                                </strong></p>
+                            <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
+                            <p>visiteur: <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong></p>
+                            <p>né(e) le :{{ ticket.birthDate|localizeddate('long','none') }}</p>
+                            <p>Pays: {{ ticket.country }}</p>
+                            {#affichage de la mention losqu'il y a lieu#}
+                            {% if(ticket.discount and ticket.age>=12 and ticket.age<60) %}
+                                <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit au tarif
+                                        réduit lors de votre visite</strong></p>
+                            {% endif %}
+                            <a class="btn btn-danger btn-xs" href="{{ path('delTicket', { 'id': key}) }}">Supprimer</a>
+                            <a class="btn btn-primary btn-xs" href="{{ path('modTicket', { 'id': key }) }}">Modifier</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+            {{ dump(booking.orderAmount) }}
+            <p id="orderAmount">le total de votre commande s'élève à: {{ booking.computeAmount }} €</p>
+            <input class="btn btn-success center-block" value="Procéder au paiement" type="submit"/>
+
+        </div>
     </div>
 
 {% endblock %}
