@@ -3,26 +3,36 @@
 
 <p>Bonjour cher (chère) client (e), </p>
 
-<p>vous avez commandé {{BookingTicket.nbTicket}} sur notre site web.</p>
+<p>vous avez commandé {{booking.nbTicket}} sur notre site web.</p>
 <p>En voici la liste :</p>
 
-{%for ticket in tickets%}
-<p>Nom et prénom:<strong>{{ticket.lastName|e}} {{ticket.firstName|e}}</strong></p>
-<p>né(e) le:{{ticket.birthDate|e}}</p>
-<p>Pays:{{ticket.country|e}}</p>
-<p>Prix:{{ticket.ticketPrice|e}}</p>
-{%if ticket.discount|e%}
-    <p id="evidence">billet à tarif réduit. Vous munir des justificatifs pour l'entrée au musée</p>
-{%endif%}
-{{% set dayLong="journée"%}
-{{%if not ticket.dayLong|e %}}
-[%set dayLong="demi-journée"%]
-{{%endif%}}
+{% for key,ticket in booking.tickets %}
+<tr>
+    <td>
 
-<p>Pour une entrée à la {{dayLong}} le <strong>{{ticket.bookingDate|e}}</strong></p>
-<p>Code billet: {{ticket.ticketCode}}</p>
-<hr />
-{%endfor%}
+        <p>Une entrée à la {{ booking.dayLongLabel }} à {{ ticket.discountLabel }}
+            pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong></p>
+        <p>Prix :<strong>
+                {% if (ticket.computePrice>0) %}
+                    {{ ticket.computePrice }} €
+                {% else %}gratuit
+                {% endif %}
+            </strong></p>
+        <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
+        <p>visiteur: <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong></p>
+        <p>né(e) le :{{ ticket.birthDate|localizeddate('long','none') }}</p>
+        <p>Pays: {{ ticket.country }}</p>
+        {#affichage de la mention losqu'il y a lieu#}
+        {% if(ticket.discount) %}
+            <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit au tarif
+                    réduit lors de votre visite</strong></p>
+        {% endif %}
+    </td>
+</tr>
+
+{% endfor %}
+<br/>
+
 <p>Nous vous remercions de votre commande et vous souhaitons une agréable visite.</p>
 <p>Le musée du Louvre. </p>
 <footer>

@@ -1,20 +1,17 @@
 {% extends "::layout.html.twig" %}
 {% block body %}
-
     <div>
         <h3>résumé de votre commande</h3>
+
         <div class="recap table-responsive">
             <table class="table table-bordered table-striped">
-                {{ dump(booking.tickets) }}
                 {% for key,ticket in booking.tickets %}
-
-
                     <tr>
                         <td>
-
                             <p>Une entrée à la {{ booking.dayLongLabel }} à {{ ticket.discountLabel }}
                                 pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong></p>
                             <p>Prix :<strong>
+                                    {#en ternaire (ticket.computePrice) ? {{ ticket.computePrice }} € : gratuit#}
                                     {% if (ticket.computePrice>0) %}
                                         {{ ticket.computePrice }} €
                                     {% else %}gratuit
@@ -25,22 +22,34 @@
                             <p>né(e) le :{{ ticket.birthDate|localizeddate('long','none') }}</p>
                             <p>Pays: {{ ticket.country }}</p>
                             {#affichage de la mention losqu'il y a lieu#}
-                            {% if(ticket.discount and ticket.age>=12 and ticket.age<60) %}
+                            {% if(ticket.discount) %}
                                 <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit au tarif
                                         réduit lors de votre visite</strong></p>
                             {% endif %}
-                            <a class="btn btn-danger btn-xs" href="{{ path('delTicket', { 'id': key}) }}">Supprimer</a>
-                            <a class="btn btn-primary btn-xs" href="{{ path('modTicket', { 'id': key }) }}">Modifier</a>
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('delTicket', { 'index': key}) }}">Supprimer</a>
+                            <a class="btn btn-primary btn-xs"
+                               href="{{ path('ticketOrder') }}">Modifier</a>
                         </td>
                     </tr>
-
                 {% endfor %}
             </table>
-            {{ dump(booking.orderAmount) }}
-            <p id="orderAmount">le total de votre commande s'élève à: {{ booking.computeAmount }} €</p>
-            <input class="btn btn-success center-block" value="Procéder au paiement" type="submit"/>
-
         </div>
-    </div>
 
+        <p id="orderAmount">le total de votre commande s'élève à: {{ booking.computeAmount }} €</p>
+        <form action="" method="POST">
+            <script
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-email="{{ booking.email }}"
+                    data-currency="eur"
+                    data-key="{{ stripe_public_key }}"
+                    data-amount="{{ booking.computeAmount* 100 }}"
+                    data-name="Musée du Louvre"
+                    data-description="votre adresse mail:"
+                    data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
+                    data-zip-code="false"
+                    data-locale="auto">
+            </script>
+        </form>
+    </div>
 {% endblock %}

@@ -7,6 +7,7 @@ use AppBundle\Entity\BookingTicket;
 use AppBundle\Entity\Ticket;
 use AppBundle\Form\Type\BookingPage2Type;
 use AppBundle\Form\Type\TicketType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\BookingType;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +15,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
-
 class BookingTicketController extends Controller
 {
+    const EMAIL_MUSEE = "reservation@louvre.fr";
+
     /**
      * @Route("/", name="homepage")
      * @param Request $request
@@ -57,25 +59,22 @@ class BookingTicketController extends Controller
     {
 
         $booking = $request->getSession()->get("booking");
-        $ticket = new Ticket();
+        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {
+            if (count($booking->getTickets()) < $booking->getNbTicket()) {
+                $ticket = new Ticket();
+                $booking->addTicket($ticket);
+            } elseif (count($booking->getTickets()) > $booking->getNbTicket()) {
+                $booking->removeTicket($booking->getTickets()->last());
+            }
 
-//        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {
-//            if(count($booking->getTickets())<$booking->getNbTicket())
-//            {
-//                $booking->addTicket($ticket);
-//            }
-//            elseif (count($booking->getTickets())>$booking->getNbTicket()){
-//                $booking->removeTicket($booking->getTickets()->last());
-//            }
-//
-//        }
+        }
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
 
-
+        setLocale(LC_CTYPE, 'FR_fr.UTF-8');
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $price=$ticket->getPrice();
+            $booking->computeAmount();
             return $this->redirectToRoute("recapBooking");
         }
 
@@ -93,43 +92,83 @@ class BookingTicketController extends Controller
     public function recapAction(Request $request) // résumé de la commande et demande de confirmation
     {
         $booking = $request->getSession()->get("booking");
+        $amount = $booking->getOrderAmount();
+        $user = $booking->getEmail();
+        if ($request->isMethod('POST')) {
+            $token = $request->request->get('stripeToken');
+            \Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
+            $em = $this->getDoctrine()->getManager();
+            try {
+                \Stripe\Charge::create(array(
+                    "amount" => $amount * 100,
+                    "currency" => "eur",
+                    "source"=>$token,
+                    "description" => "Paiement commande"
+                ));
+                $em->persist($booking);
+                $em->flush();
+                $this->addFlash('success', 'Paiement effectué avec succès');
+                return $this->redirectToRoute('sendEmail', array('id' => $booking->getId()));
+            } catch (\Exception $exception) {
+                $this->addFlash('error', 'Paiement impossible '.$exception->getMessage());
+                $this->redirectToRoute('recapBooking');
+            }
 
-        return $this->render('BookingTicket/recap.html.twig', array('booking' => $booking));
 
+        }
+        return $this->render('BookingTicket/recap.html.twig', array('booking' => $booking,
+            'name' => $user,
+            'amount' => $amount,
+            'stripe_public_key' => $this->getParameter('stripe_public_key')
+        ));
     }
 
-//    /**
-//     * @Route("/payment", name="pay_with_stripe")
-//     */
-//    public function paymentAction() // paiement de la commande avec stripe
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//        $booking = $em->getRepository('AppBundle:BookingTicket');
-//        $em->flush();
-//        return $this->render('BookingTicket/payment.html.twig',array('booking'=>$booking));
-//    }
 
     /**
-     * @Route("/confirmOrder", name="sendEmail")
+     * @Route("/confirmOrder/{id}", name="sendEmail")
      */
-    public function sendEmailAction($booking,\Swift_Mailer $mailer) // envoi du courriel de confirmation avec résumé de la commande
+    public function sendEmailAction(BookingTicket $booking, \Swift_Mailer $mailer) // envoi du courriel de confirmation avec résumé de la commande
     {
 
         $message = (new \Swift_Message('Vos tickets d\'entrée au Musée du Louvre'))
-            ->setFrom('reservation@louvre.fr')
+            ->setFrom(self::EMAIL_MUSEE)
             ->setTo($booking->getEmail())
-            ->setBody($this->renderView('BookingTicket/email.html.twig',array('booking' => $booking)),'text/html');
+            ->setBody($this->renderView('BookingTicket/email.html.twig', array('booking' => $booking)), 'text/html');
         $mailer->send($message);
 
         return $this->redirectToRoute("sendingOk");
 
     }
-/**
-* @Route("/confirmation", name="sendingOk")
-*/
+
+    /**
+     * @Route("/confirmation", name="sendingOk")
+     */
     public function sendingOKAction(Request $request)
     {
         $booking = $request->getSession()->get("booking");
+        $request->getSession()->invalidate(1);
         return $this->render('BookingTicket/sendingconfirmation.html.twig', array('booking' => $booking));
+
+
+    }
+
+    /**
+     * @Route("/delTicket/{index}", name="delTicket")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function delTicketAction($index, SessionInterface $session)
+    {
+        $booking = $session->get('booking');
+        $booking->removeTicket($booking->getTickets()->get($index));
+        $booking->computeAmount(); //on recalcule le prix
+        $countTicket = count($booking->getTickets());
+        $booking->setNbTicket($countTicket); //on recalcule le nombre de ticket
+        if ($countTicket) {
+            return $this->redirectToRoute("recapBooking");//s'il est >0
+        } else {
+            $booking->setNbTicket(1);// s'il est nul on recréé un ticket vierge
+            return $this->redirectToRoute("ticketOrder");
+        }
     }
 }

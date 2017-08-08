@@ -32,3 +32,18 @@ $('.js-datepicker-birthdate').datepicker(
         endDate: '-1m'
     }
 );
+
+//personalisation du bouton pay with card de stripe
+$(".stripe-button-el span").remove();
+$("button.stripe-button-el").removeAttr('style').css({
+    "background-image": "linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4)",
+    "padding": "6px 12px",
+    "color": "white",
+    "font-size": "1em"
+}).html("Procéder au paiement");
+
+//personalisation de l'adresse courriel du client dans le modal stripe
+$("span.Header-loggedInEmail").removeAttr('style').css({
+    "color": "red",
+    "font-weight": "bold"
+});

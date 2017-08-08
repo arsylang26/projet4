@@ -3,7 +3,7 @@
 <h3>Formulaire de réservation des billets du Musée du louvre</h3>
 <div class="well">
     {{ form_start(form) }}
-    {{ form_row(form) }}
+    {{ form_widget(form.tickets) }}
     <input class="btn btn-success center-block" type="submit"/>
     {{ form_end(form) }}
 </div>

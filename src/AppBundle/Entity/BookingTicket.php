@@ -27,10 +27,10 @@ class BookingTicket
     const TYPE_HALF_DAY = false;
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
     const HALF_DAY_HOUR = '14:00';
-    const OFF_DAYS = array('1/05','1/11','25/12');
+    const OFF_DAYS = array('1/05', '1/11', '25/12');
     const NO_BOOKING_DAY = 'Sunday';
     const MAX_BOOKING_IN_A_DAY = 1000;
-    const WEEKLY_CLOSING_DAY='Tuesday';
+    const WEEKLY_CLOSING_DAY = 'Tuesday';
     /**
      * @var int
      *
@@ -79,7 +79,7 @@ class BookingTicket
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Ticket",mappedBy="booking",cascade={"persist"})
-     * @Assert\Valid()
+     * @Assert\Valid() //permet la validation des asserts sur l'entité Ticket
      */
     private $tickets;
 
@@ -255,7 +255,7 @@ class BookingTicket
     public function addTicket(\AppBundle\Entity\Ticket $ticket)
     {
         $this->tickets[] = $ticket;
-
+        $ticket->setBooking($this);//determine l'appartenance du ticket à la réservation
         return $this;
     }
 

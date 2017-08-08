@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Ticket
 {
-    const PRIX_BILLET_ENFANT = 4;
+    const PRIX_BILLET_ENFANT = 8;
     const PRIX_BILLET_NORMAL = 16;
     const PRIX_BILLET_SENIOR = 12;
     const PRIX_BILLET_REDUIT = 10;
@@ -102,6 +102,7 @@ class Ticket
         $this->ticketCode = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
 
     }
+
     /**
      * Get id
      *
@@ -185,6 +186,73 @@ class Ticket
     }
 
     /**
+     * Get price
+     *
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     *
+     * @return Ticket
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getTicketCode()
+    {
+        return $this->ticketCode;
+    }
+
+    public function setTicketCode($ticketcode)
+    {
+        $this->ticketCode = $ticketcode;
+
+        return $this;
+    }
+
+    public function computePrice()
+    {
+        $booking = $this->getBooking();
+        $age = $this->getAge();
+        $discount = $this->getDiscount();
+        $dayLong = $booking->getDayLong();
+        if ($age >= 12 && $age < 60) {
+            $price = self::PRIX_BILLET_NORMAL;
+        } elseif ($age < 4) {
+            $price = 0;
+        } elseif ($age >= 4 && $age < 12) {
+            $price = self::PRIX_BILLET_ENFANT;
+        } else {
+            $price = self::PRIX_BILLET_SENIOR;
+        }
+//si le tarif réduit est coché et que la condition d'âge est remplie le tarif réduit est appliqué sinon il n'y a pas lieu de tarif réduit
+        if ($discount) {
+            if ($age >= 18 && $age < 60) {
+                $price = self::PRIX_BILLET_REDUIT;
+            } else {
+                $this->setDiscount(false);
+            }
+        }
+
+        if (!$dayLong) {
+            $price = $price * self::TAUX_DEMI_JOURNEE;
+        }
+        $this->setPrice($price);
+        return $this->price;
+    }
+
+    /**
      * Get booking
      *
      * @return \AppBundle\Entity\BookingTicket
@@ -204,30 +272,6 @@ class Ticket
     public function setBooking(\AppBundle\Entity\BookingTicket $booking)
     {
         $this->booking = $booking;
-
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return string
-     */
-    public function getPrice()
-    {
-       return $this->price;
-    }
-
-    /**
-     * Set price
-     *
-     * @param string $price
-     *
-     * @return Ticket
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
 
         return $this;
     }
@@ -288,47 +332,8 @@ class Ticket
     }
 
 
-    public function getTicketCode()
-    {
-        return $this->ticketCode;
-    }
+    //renvoie demi-tarif pour discount=vrai, plein-tarif sinon
 
-    public function setTicketCode($ticketcode)
-    {
-        $this->ticketCode =$ticketcode;
-
-        return $this;
-    }
-    public function computePrice()
-    {
-        $booking = $this->getBooking();
-
-        $age = $this->getAge();
-        $discount = $this->getDiscount();
-        $dayLong = 1;//$booking->getDayLong();
-        if ($age >=12 && $age < 60) {
-            $price = self::PRIX_BILLET_NORMAL;
-        }
-        elseif ($age < 4) {
-            $price = 0;
-        }
-        elseif ($age >= 4 && $age < 12) {
-            $price = self::PRIX_BILLET_ENFANT;
-        }
-        else {
-            $price = self::PRIX_BILLET_SENIOR;
-        }
-
-        if ($discount && ($age >= 12 && $age < 60)) {
-            $price = self::PRIX_BILLET_REDUIT;
-        }
-
-       if (!$dayLong) {
-            $price = $price * self::TAUX_DEMI_JOURNEE;
-        }
-        $this->setPrice($price);
-        return $this->price;
-    }
     public function getDiscountLabel()
     {
         return ($this->discount) ? "demi-tarif" : "plein tarif";

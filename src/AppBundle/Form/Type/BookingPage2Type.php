@@ -22,7 +22,8 @@ class BookingPage2Type extends AbstractType
     {
         $builder
             ->add('tickets', CollectionType::class, array(
-            'entry_type' => TicketType::class));
+            'entry_type' => TicketType::class,
+                'label'=>false));
 
     }
 
