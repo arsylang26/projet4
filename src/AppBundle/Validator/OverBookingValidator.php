@@ -25,7 +25,6 @@ class OverBookingValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        dump($value);
         $isOK = $this->isOk($value);
         if (!$isOK) {
             // C'est cette ligne qui déclenche l'erreur pour le formulaire, avec en argument le message

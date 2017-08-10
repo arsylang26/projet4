@@ -7,6 +7,7 @@ use AppBundle\Entity\BookingTicket;
 use AppBundle\Entity\Ticket;
 use AppBundle\Form\Type\BookingPage2Type;
 use AppBundle\Form\Type\TicketType;
+use AppBundle\Manager\BookingManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\BookingType;
@@ -24,12 +25,12 @@ class BookingTicketController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function page1Action(Request $request, SessionInterface $session)// saisie du mail du demandeur, de la date de réservation, du type de billet
+    public function page1Action(Request $request, BookingManager $bookingManager)// saisie du mail du demandeur, de la date de réservation, du type de billet
     {
         // On crée un objet Booking
-        $booking = new BookingTicket();
-        $session->set("booking", $booking);
-        $form = $this->createForm(BookingType::class, $booking);
+
+
+        $form = $this->createForm(BookingType::class, $bookingManager->initBooking());
         $form->handleRequest($request);
 
         //ajouter ici le test sur la date de réservation

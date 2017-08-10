@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Alpha;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,7 +34,7 @@ class Ticket
      *
      * @ORM\Column(name="firstName", type="string", length=50)
      * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="prénom trop long")
-     * @Assert\Type(type="alpha", message="format du prénom bizzaroïde: {{ value }} n'est pas valide.")
+     * @Alpha()
      */
     private $firstName;
 
@@ -42,7 +43,7 @@ class Ticket
      *
      * @ORM\Column(name="lastName", type="string", length=50)
      * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="patronyme trop long")
-     * @Assert\Type(type="alpha", message="format du nom bizzaroïde: {{ value }} n'est pas valide.")
+     * @Alpha()
      */
     private $lastName;
 
