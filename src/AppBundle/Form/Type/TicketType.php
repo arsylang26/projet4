@@ -17,7 +17,7 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName',TextType::class, array('required' => true, 'label' => 'votre nom'))
+            ->add('lastName',TextType::class, array('required' => true, 'label' => 'votre nom','attr'=>array('autofocus'=>'autofocus')))
             ->add('firstName',  TextType::class, array('required' => true, 'label' => 'votre prénom'))
             ->add('birthDate', BirthdayType::class, array('label' => 'votre date de naissance','format' => 'dd-MM-yyyy', 'widget' => 'single_text',
                 'attr' => ['class' => 'js-datepicker-birthdate'], 'html5' => false))

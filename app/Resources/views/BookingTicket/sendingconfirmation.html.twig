@@ -1,7 +1,16 @@
 {% extends "::layout.html.twig" %}
 {% block body %}
-    <h3>Un courriel de confirmation de commande vous a été envoyé à avec vos billets</h3>
+    <div class="container trolley">
+        <ol class="progress-meter">
+            <li class="progress-point done">Vos coordonnées</li>
+            <li class="progress-point done">les visiteurs</li>
+            <li class="progress-point done">votre commande</li>
+            <li class="progress-point done">finalisation</li>
+        </ol>
+    </div>
+    <h3>Un courriel de confirmation de commande vous a été envoyé à <strong>{{ booking.email }}</strong> avec vos billets</h3>
     <p>
         <a href="{{ path('homepage') }}" class="btn btn-sm btn-primary">retour à l'accueil </a>
     </p>
+
 {% endblock %}

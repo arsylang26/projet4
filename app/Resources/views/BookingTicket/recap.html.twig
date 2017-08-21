@@ -2,7 +2,14 @@
 {% block body %}
     <div>
         <h3>résumé de votre commande</h3>
-
+        <div class="container trolley">
+            <ol class="progress-meter">
+                <li class="progress-point done">Vos coordonnées</li>
+                <li class="progress-point done">les visiteurs</li>
+                <li class="progress-point done">votre commande</li>
+                <li class="progress-point todo">finalisation</li>
+            </ol>
+        </div>
         <div class="recap table-responsive">
             <table class="table table-bordered table-striped">
                 {% for key,ticket in booking.tickets %}
@@ -19,7 +26,7 @@
                                 </strong></p>
                             <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
                             <p>visiteur: <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong></p>
-                            <p>né(e) le :{{ ticket.birthDate|localizeddate('long','none') }}</p>
+                            <p>né(e) le: {{ ticket.birthDate|localizeddate('long','none') }}</p>
                             <p>Pays: {{ ticket.country }}</p>
                             {#affichage de la mention losqu'il y a lieu#}
                             {% if(ticket.discount) %}
@@ -48,7 +55,9 @@
                     data-description="votre adresse mail:"
                     data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
                     data-zip-code="false"
-                    data-locale="auto">
+                    data-locale="auto"
+                    data-allow-remember-me="false"
+            >
             </script>
         </form>
     </div>

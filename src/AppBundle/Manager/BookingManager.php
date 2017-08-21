@@ -10,6 +10,7 @@ namespace AppBundle\Manager;
 
 
 use AppBundle\Entity\BookingTicket;
+use AppBundle\Exception\BookingNotFoundException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class BookingManager
@@ -25,19 +26,20 @@ class BookingManager
     {
         $booking = new BookingTicket();
 
-        $this->session->set("booking", $booking);
+        $this->session->set('booking', $booking);
         return $booking;
 
     }
 
     /**
-     * @return SessionInterface
+     * @return BookingTicket
      */
-    public function retrieveBooking()
+    public function recoverBooking()
     {
         $booking = $this->session->get('booking', null);
-        if ($booking === null) {
-            throw new \Exception();//creer class propre exception extend exception si exception levée->homepage avec listener kernel exception if instanceof
+        if ($booking === null) { //si aucune session
+
+            throw new BookingNotFoundException();//creer class propre exception extend exception si exception levée->homepage avec listener kernel exception if instanceof
         }
         return $booking;
     }

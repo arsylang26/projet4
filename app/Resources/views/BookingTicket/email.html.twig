@@ -1,43 +1,73 @@
-<h3>Musée du louvre</h3>
-<img src="{{ asset('bundles/app/pictures/icone.jpg')}}" alt="logo musée du Louvre" width="300"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 
-<p>Bonjour cher (chère) client (e), </p>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/foundation-emails.css') }}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
 
-<p>vous avez commandé {{booking.nbTicket}} sur notre site web.</p>
-<p>En voici la liste :</p>
+    </style>
 
-{% for key,ticket in booking.tickets %}
-<tr>
-    <td>
+</head>
+<body>
+<table class="body" data-made-with-foundation>
+    <tr>
+        <td class="float-center" align="center" valign="top">
 
-        <p>Une entrée à la {{ booking.dayLongLabel }} à {{ ticket.discountLabel }}
-            pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong></p>
-        <p>Prix :<strong>
-                {% if (ticket.computePrice>0) %}
-                    {{ ticket.computePrice }} €
-                {% else %}gratuit
-                {% endif %}
-            </strong></p>
-        <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
-        <p>visiteur: <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong></p>
-        <p>né(e) le :{{ ticket.birthDate|localizeddate('long','none') }}</p>
-        <p>Pays: {{ ticket.country }}</p>
-        {#affichage de la mention losqu'il y a lieu#}
-        {% if(ticket.discount) %}
-            <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit au tarif
-                    réduit lors de votre visite</strong></p>
-        {% endif %}
-    </td>
-</tr>
 
-{% endfor %}
-<br/>
+                <img src="https://www.digitourist.com/images/logos/98899881.jpg" alt="logo musée du Louvre" width="200"/>
 
-<p>Nous vous remercions de votre commande et vous souhaitons une agréable visite.</p>
-<p>Le musée du Louvre. </p>
-<footer>
-    <p>Musée du Louvre © {{ 'now'|date('Y') }}
-        <a href="#">CGU</a>
-        <a href="#">CGV</a>
-    </p>
-</footer>
+                <p>Bonjour cher (chère) client (e), </p>
+                <br/>
+                <p>vous avez commandé {{ booking.nbTicket }} billet(s) sur notre site web.</p>
+                <p>En voici la liste :</p>
+                <div class="recap table-responsive">
+                    <table class="table table-bordered table-striped">
+                        {% for key,ticket in booking.tickets %}
+                            <tr>
+                                <td>
+                                    <p>Une entrée à la <strong>{{ booking.dayLongLabel }}</strong> à
+                                        <strong>{{ ticket.discountLabel }}</strong>
+                                        pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong>
+                                    </p>
+                                    <p>Prix :<strong>
+                                            {% if (ticket.computePrice>0) %}
+                                                {{ ticket.computePrice }} €
+                                            {% else %}gratuit
+                                            {% endif %}
+                                        </strong></p>
+                                    <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
+                                    <p>visiteur:
+                                        <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong></p>
+                                    <p>né(e) le :{{ ticket.birthDate|localizeddate('long','none') }}</p>
+                                    <p>Pays: {{ ticket.country }}</p>
+                                    {#affichage de la mention losqu'il y a lieu#}
+                                    {% if(ticket.discount) %}
+                                        <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit
+                                                au tarif
+                                                réduit lors de votre visite</strong></p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <br/>
+
+
+                <p>Nous vous remercions de votre commande et vous souhaitons une agréable visite.</p>
+                <p>le Musée du Louvre © {{ 'now'|date('Y') }}
+                    <a href="#">CGU</a>
+                    <a href="#">CGV</a>
+                </p>
+
+
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+
+

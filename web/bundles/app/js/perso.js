@@ -32,6 +32,8 @@ $('.js-datepicker-birthdate').datepicker(
         endDate: '-1m'
     }
 );
+//mise en forme des flash messages
+$('.flash-notice').delay(3000).fadeOut(1000, 'swing').css({"border":"1px solid blue","background-color":"lightblue","text-align":"center"});
 
 //personalisation du bouton pay with card de stripe
 $(".stripe-button-el span").remove();
@@ -47,3 +49,51 @@ $("span.Header-loggedInEmail").removeAttr('style').css({
     "color": "red",
     "font-weight": "bold"
 });
+
+// levée d'un message au click de la checkbox "tarif réduit"
+$('input[type=checkbox]').click(function () {
+    if (this.checked) {
+
+      alert('Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée.\n\n Un justificatif sera demandé lors de votre visite');
+    }
+
+});
+
+
+
+
+
+// function displayDiscountPopup() {
+//
+// var $message='Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée.<br> Un justificatif sera demandé lors de votre visite';
+//     $('body').append('<div id="discountWarning" title="Avertissement"></div>');
+//     $("#discountWarning").html($message);
+//
+//
+//
+//     var popup = $("#discountWarning").dialog({
+//         autoOpen: true,
+//         width: 400,
+//         dialogClass: 'dialogstyle',
+//         buttons: [
+//             {
+//                 text: "OK",
+//                 "class": 'ui-state-warning',
+//                 click: function () {
+//                     $(this).dialog("close");
+//                     $('#discountWarning').remove();
+//                 }
+//             }
+//         ]
+//     });
+//     $("#discountWarning").prev().addClass('ui-state-warning');
+//     return popup;
+//
+// }
+//
+// $('input[type=checkbox]').click(function () {
+//     if (this.checked) {
+//
+//         $(displayDiscountPopup());
+//
+// });

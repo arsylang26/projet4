@@ -9,7 +9,8 @@ framework:
 
 web_profiler:
     toolbar: true
-    intercept_redirects: true
+    intercept_redirects: false
+#    mettre a true pour voir les redirections
 
 monolog:
     handlers:

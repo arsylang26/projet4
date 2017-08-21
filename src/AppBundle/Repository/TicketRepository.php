@@ -11,12 +11,5 @@ use Doctrine\ORM\QueryBuilder;
  */
 class TicketRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function delTicket($index)
-    {
 
-    }
-    public function updateTicket($index)
-    {
-
-    }
 }

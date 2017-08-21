@@ -30,7 +30,7 @@ class BookingType extends AbstractType
             ->add('email', RepeatedType::class, array(
                 'type' => EmailType::class,
                 'invalid_message' => 'Les adresses courriels sont différentes.',
-                'options' => array('attr' => array('class' => 'email-field')),
+                'options' => array('attr' => array('class' => 'email-field','autofocus')),
                 'required' => true,
                 'first_options' => array('label' => 'Votre adresse courriel'),
                 'second_options' => array('label' => 'Confirmer votre adresse courriel')))

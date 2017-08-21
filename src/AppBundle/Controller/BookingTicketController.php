@@ -5,9 +5,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\BookingTicket;
 use AppBundle\Entity\Ticket;
+use AppBundle\Exception\BookingNotFoundException;
 use AppBundle\Form\Type\BookingPage2Type;
 use AppBundle\Form\Type\TicketType;
 use AppBundle\Manager\BookingManager;
+use AppBundle\Service\SendEmail;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\BookingType;
@@ -18,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class BookingTicketController extends Controller
 {
-    const EMAIL_MUSEE = "reservation@louvre.fr";
 
     /**
      * @Route("/", name="homepage")
@@ -27,8 +28,6 @@ class BookingTicketController extends Controller
      */
     public function page1Action(Request $request, BookingManager $bookingManager)// saisie du mail du demandeur, de la date de réservation, du type de billet
     {
-        // On crée un objet Booking
-
 
         $form = $this->createForm(BookingType::class, $bookingManager->initBooking());
         $form->handleRequest($request);
@@ -42,9 +41,6 @@ class BookingTicketController extends Controller
 
         }
 
-
-        // On passe la méthode createView() du formulaire à la vue
-        // afin qu'elle puisse afficher le formulaire toute seule
         return $this->render('BookingTicket/page1.html.twig', array(
             'form' => $form->createView()));
 
@@ -56,11 +52,11 @@ class BookingTicketController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function page2Action(Request $request) // saisie du nom, prénom, date de naissance, pays, tarif réduit pour chaque billet
+    public function page2Action(Request $request, BookingManager $bookingManager) // saisie du nom, prénom, date de naissance, pays, tarif réduit pour chaque billet
     {
 
-        $booking = $request->getSession()->get("booking");
-        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {
+        $booking =$bookingManager->recoverBooking();
+        for ($i = 1; $i <= $booking->getNbTicket(); $i++) {//dans une methode bookingManager ->initTickets(avec le for)
             if (count($booking->getTickets()) < $booking->getNbTicket()) {
                 $ticket = new Ticket();
                 $booking->addTicket($ticket);
@@ -72,16 +68,12 @@ class BookingTicketController extends Controller
         $form = $this->createForm(BookingPage2Type::class, $booking);
         $form->handleRequest($request);
 
-        setLocale(LC_CTYPE, 'FR_fr.UTF-8');
-        if ($form->isSubmitted() && $form->isValid()) {
 
+        if ($form->isSubmitted() && $form->isValid()) {
             $booking->computeAmount();
             return $this->redirectToRoute("recapBooking");
         }
 
-
-        // On passe la méthode createView() du formulaire à la vue
-        // afin qu'elle puisse afficher le formulaire toute seule
         return $this->render('BookingTicket/page2.html.twig', array(
             'form' => $form->createView()));
     }
@@ -90,11 +82,12 @@ class BookingTicketController extends Controller
     /**
      * @Route("/recapBooking", name="recapBooking")
      */
-    public function recapAction(Request $request) // résumé de la commande et demande de confirmation
+    public function recapAction(Request $request,BookingManager $bookingManager,SendEmail $sendEmail) // résumé de la commande et demande de confirmation
     {
-        $booking = $request->getSession()->get("booking");
+        $booking =$bookingManager->recoverBooking();
         $amount = $booking->getOrderAmount();
         $user = $booking->getEmail();
+        $orderID=$booking->getId();
         if ($request->isMethod('POST')) {
             $token = $request->request->get('stripeToken');
             \Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
@@ -104,12 +97,13 @@ class BookingTicketController extends Controller
                     "amount" => $amount * 100,
                     "currency" => "eur",
                     "source"=>$token,
-                    "description" => "Paiement commande"
+                    "description" => "Paiement commande n° $orderID"
                 ));
                 $em->persist($booking);
                 $em->flush();
                 $this->addFlash('success', 'Paiement effectué avec succès');
-                return $this->redirectToRoute('sendEmail', array('id' => $booking->getId()));
+              $sendEmail->sendEmail($booking);
+               return $this->redirectToRoute('sendingOk');
             } catch (\Exception $exception) {
                 $this->addFlash('error', 'Paiement impossible '.$exception->getMessage());
                 $this->redirectToRoute('recapBooking');
@@ -132,12 +126,12 @@ class BookingTicketController extends Controller
     {
 
         $message = (new \Swift_Message('Vos tickets d\'entrée au Musée du Louvre'))
-            ->setFrom(self::EMAIL_MUSEE)
+            ->setFrom('reservation@louvre.fr')
             ->setTo($booking->getEmail())
             ->setBody($this->renderView('BookingTicket/email.html.twig', array('booking' => $booking)), 'text/html');
         $mailer->send($message);
 
-        return $this->redirectToRoute("sendingOk");
+        return $this->redirectToRoute("sendingOk",array('booking'=>$booking));
 
     }
 
