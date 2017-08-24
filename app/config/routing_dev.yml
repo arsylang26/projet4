@@ -12,3 +12,9 @@ _errors:
 
 _main:
     resource: routing.yml
+
+#error404:
+#    path: /404
+#    defaults:
+#        _controller: FrameworkBundle:Template:template
+#        template:    TwigBundle:Exception:error404.html.twig

@@ -12,30 +12,30 @@ use AppBundle\Entity\BookingTicket;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
-
 class SendEmail
 {
     const EMAIL_MUSEE = 'reservation@louvre.fr';
 
+    /** @var \Twig_Environment */
     private $twig;
+
+    /** @var \Swift_Mailer */
     private $mailer;
 
 
-    public function __construct(\Twig_Environment $twig,\Swift_Mailer $swift_Mailer)
+    public function __construct(\Twig_Environment $twig, \Swift_Mailer $swift_Mailer)
     {
-
-        $this->twig=$twig;
-        $this->mailer=$swift_Mailer;
+        $this->twig = $twig;
+        $this->mailer = $swift_Mailer;
     }
 
 
     public function sendEmail(BookingTicket $booking)
     {
-
         $message = (new \Swift_Message('Vos tickets d\'entrée au Musée du Louvre'))
             ->setFrom(self::EMAIL_MUSEE)
             ->setTo($booking->getEmail())
             ->setBody($this->twig->render('BookingTicket/email.html.twig', array('booking' => $booking)), 'text/html');
-         return $this->mailer->send($message);
+        return $this->mailer->send($message);
     }
 }

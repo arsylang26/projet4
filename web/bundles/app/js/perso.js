@@ -33,7 +33,7 @@ $('.js-datepicker-birthdate').datepicker(
     }
 );
 //mise en forme des flash messages
-$('.flash-notice').delay(3000).fadeOut(1000, 'swing').css({"border":"1px solid blue","background-color":"lightblue","text-align":"center"});
+$('[class^="flash"]').delay(3000).fadeOut(1000, 'swing').css({"border":"1px solid blue","background-color":"lightblue","text-align":"center"});
 
 //personalisation du bouton pay with card de stripe
 $(".stripe-button-el span").remove();
@@ -54,7 +54,10 @@ $("span.Header-loggedInEmail").removeAttr('style').css({
 $('input[type=checkbox]').click(function () {
     if (this.checked) {
 
-      alert('Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée.\n\n Un justificatif sera demandé lors de votre visite');
+      $(this).parent().append("<p id='info'><strong>Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée."+
+          "Un justificatif sera demandé lors de votre visite</strong></p>");
+    }else{
+        $('#info').remove();
     }
 
 });
