@@ -40,18 +40,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException}
 
-    sendEmail:
-        class: AppBundle\SendEmail
-        arguments:
-            - "@mailer"
-            - $booking
+#    sendEmail:
+#        class: AppBundle\SendEmail
+#        arguments:
+#            - "@mailer"
+#            - $booking
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
-
-
-
-
-#

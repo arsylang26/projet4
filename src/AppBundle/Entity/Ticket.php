@@ -19,7 +19,7 @@ class Ticket
     const PRIX_BILLET_SENIOR = 12;
     const PRIX_BILLET_REDUIT = 10;
     const TAUX_DEMI_JOURNEE = 60 / 100;
-//const AGES_DEMI_TARIF=range(12,59,1);
+
     /**
      * @var int
      *

@@ -25,6 +25,4 @@ class BookingTicketRepository extends \Doctrine\ORM\EntityRepository
             ->getSingleScalarResult();
 
     }
-
-
 }
