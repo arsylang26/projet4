@@ -21,7 +21,7 @@ class HalfDayValidator extends ConstraintValidator
         if (!$isOK) {
             // C'est cette ligne qui déclenche l'erreur pour le formulaire, avec en argument le message
             $this->context->buildViolation($constraint->message)
-                ->setParameter("{{bookingDate}}", $value->format('d/m/Y'))
+                ->setParameter("{{bookingDate}}", $this->context->getRoot()->getData()->getBookingDate()->format('d/m/Y'))
                 ->addViolation();
         }
     }
@@ -32,7 +32,7 @@ class HalfDayValidator extends ConstraintValidator
         $today = $currentDate->format('d/m/Y');
         $date = $this->context->getRoot()->getData()->getBookingDate();
         if ($value) {// si à la journée
-            if (($date->format('H:i') > BookingTicket::HALF_DAY_HOUR)
+            if (($currentDate->format('H:i') > BookingTicket::HALF_DAY_HOUR)
                 && ($date->format('d/m/Y')) == $today
             ) {
                 return false;

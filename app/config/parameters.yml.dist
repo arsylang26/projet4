@@ -16,9 +16,9 @@ parameters:
     mailer_password: ~
 
    # A secret key that's used to generate certain security-related tokens
-      secret: ThisTokenIsNotSoSecretChangeIt
-      stripe_secret_key:sk_test_xxxxxxxxxxxxxxxxx
-      stripe_public_key: pk_test_xxxxxxxxxxxxxxxxx
+    secret: ThisTokenIsNotSoSecretChangeIt
+    stripe_secret_key:sk_test_xxxxxxxxxxxxxxxxx
+    stripe_public_key: pk_test_xxxxxxxxxxxxxxxxx
 
    # set to https on production
-      secure_channel: https
+    secure_channel: https

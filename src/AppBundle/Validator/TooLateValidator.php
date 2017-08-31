@@ -30,9 +30,10 @@ class TooLateValidator extends ConstraintValidator
     {
         $currentDate = new \DateTime();
         $today = $currentDate->format('d/m/Y');
-        if (($date->format('H:i') > BookingTicket::TOO_LATE_HOUR)
-            && ($date->format('d/m/Y')) == $today
-        ) {
+
+
+        if (($currentDate->format('H:i') > BookingTicket::TOO_LATE_HOUR)
+            && ($date->format('d/m/Y') == $today)) {
             return false;
         } else {
             return true;

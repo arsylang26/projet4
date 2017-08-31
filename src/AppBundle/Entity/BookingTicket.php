@@ -62,7 +62,6 @@ class BookingTicket
      * @ORM\Column(name="bookingDate", type="datetime")
      * @Assert\DateTime(message="le format de la date n'est pas valide")
      * @Assert\GreaterThanOrEqual("today",message="la date doit être ultérieure à aujourd'hui")
-
      * @TooLate()
      * @OffDays()
      * @OverBooking()

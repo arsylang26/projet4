@@ -11,5 +11,5 @@ use Symfony\Component\Validator\Constraint;
 class HalfDay extends Constraint
 {
 
-    public $message = "{{bookingDate}} : Trop tard pour un billet à la journée aujourd'hui";
+    public $message = "{{bookingDate}} : Trop tard pour un billet à la journée aujourd'hui passé 14h00";
 }

@@ -98,12 +98,14 @@ class BookingManager
             \Stripe\Stripe::setApiKey($stripeSecretKey);
 
             try {
-                \Stripe\Charge::create(array(
-                    "amount" => $amount * 100,
-                    "currency" => "eur",
-                    "source" => $token,
-                    "description" => "Paiement commande n° $orderID"
-                ));
+               if($amount>0) {
+                   \Stripe\Charge::create(array(
+                       "amount" => $amount * 100,
+                       "currency" => "eur",
+                       "source" => $token,
+                       "description" => "Paiement commande n° $orderID"
+                   ));
+               }
                 $this->em->persist($booking);
                 $this->em->flush();
                 $this->session->getFlashBag()->add('success', 'Paiement effectué avec succès');

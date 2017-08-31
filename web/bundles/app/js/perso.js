@@ -55,10 +55,10 @@ $("span.Header-loggedInEmail").removeAttr('style').css({
 $('input[type=checkbox]').click(function () {
     if (this.checked) {
 
-      $(this).parent().append("<p id='info'><strong>Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée."+
+      $(this).parent().append("<p class='info'><strong>Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée."+
           " Un justificatif sera demandé lors de votre visite</strong></p>");
     }else{
-        $('#info').remove();
+        $(this).siblings('.info').remove();
     }
 
 });

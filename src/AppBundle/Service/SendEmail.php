@@ -32,8 +32,9 @@ class SendEmail
 
     public function sendEmail(BookingTicket $booking)
     {
-        $message = (new \Swift_Message('Vos tickets d\'entrée au musée du Louvre'))
+        $message = (new \Swift_Message("Vos tickets d'entrée au musée du Louvre"))
             ->setFrom(self::EMAIL_MUSEE)
+            ->setCharset('utf-8')
             ->setTo($booking->getEmail())
             ->setBody($this->twig->render('BookingTicket/email.html.twig', array('booking' => $booking)), 'text/html');
         return $this->mailer->send($message);

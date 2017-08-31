@@ -44,8 +44,9 @@
         </div>
 
         <p id="orderAmount">le total de votre commande s'élève à: <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
-        {% if(booking.computeAmount>0) %}
-        <form action="" method="POST">
+
+        <form action="" method="POST" style="text-align: center;">
+            {% if(booking.computeAmount>0) %}
             <script
                     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                     data-description="votre adresse mail:"
@@ -60,9 +61,10 @@
                     data-allow-remember-me="false"
             >
             </script>
+            {% else %}
+                <input type="submit" value="Confirmer" name="freeTicket">
+            {% endif %}
         </form>
-        {% else %}
-        <a class="btn btn-success center-block" href="{{ path('sendingOk') }}">Confirmer</a>
-        {% endif %}
+
     </div>
 {% endblock %}
