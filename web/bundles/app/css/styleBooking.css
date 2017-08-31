@@ -25,9 +25,7 @@ body {
     color:red;
 }
 
-/*label.required:before {*/
-    /*content: "* ";*/
-/*}*/
+
 
 #content h3 {
     text-align: center;
@@ -60,9 +58,12 @@ form li{
     text-align: center;
     font-size: large;
 }
-.stripe-button-el{
-    margin:auto;
+/*centrage du bouton de paiement sur la page recap*/
+button.stripe-button-el{
+    text-align:center;
 }
+
+
 .Checkout.is-desktop .Header-loggedInEmail {
     color:red;
     font-weight: bold;

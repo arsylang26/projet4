@@ -20,7 +20,7 @@
                             <p>Prix :<strong>
                                     {#en ternaire (ticket.computePrice) ? {{ ticket.computePrice }} € : gratuit#}
                                     {% if (ticket.computePrice>0) %}
-                                        {{ ticket.computePrice }} €
+                                        {{ ticket.computePrice|number_format(2, ',', '.') }} €
                                     {% else %}gratuit
                                     {% endif %}
                                 </strong></p>
@@ -43,16 +43,17 @@
             </table>
         </div>
 
-        <p id="orderAmount">le total de votre commande s'élève à: {{ booking.computeAmount }} €</p>
+        <p id="orderAmount">le total de votre commande s'élève à: <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
+        {% if(booking.computeAmount>0) %}
         <form action="" method="POST">
             <script
                     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-description="votre adresse mail:"
                     data-email="{{ booking.email }}"
                     data-currency="eur"
                     data-key="{{ stripe_public_key }}"
                     data-amount="{{ booking.computeAmount* 100 }}"
                     data-name="Musée du Louvre"
-                    data-description="votre adresse mail:"
                     data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
                     data-zip-code="false"
                     data-locale="auto"
@@ -60,5 +61,8 @@
             >
             </script>
         </form>
+        {% else %}
+        <a class="btn btn-success center-block" href="{{ path('sendingOk') }}">Confirmer</a>
+        {% endif %}
     </div>
 {% endblock %}

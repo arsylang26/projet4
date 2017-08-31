@@ -1,5 +1,6 @@
 {% extends "::layout.html.twig" %}
 {% block body %}
+    <h3>Commande réussie</h3>
     <div class="container trolley">
         <ol class="progress-meter">
             <li class="progress-point done">Vos coordonnées</li>
@@ -8,9 +9,9 @@
             <li class="progress-point done">finalisation</li>
         </ol>
     </div>
-    <h3>Un courriel de confirmation de commande vous a été envoyé à <strong>{{ booking.email }}</strong> avec vos billets</h3>
+    <h4>Un courriel de confirmation de commande vous a été envoyé à <strong>{{ booking.email }}</strong> avec vos billets</h4>
     <p>
-        <a href="{{ path('homepage') }}" class="btn btn-sm btn-primary">retour à l'accueil </a>
+        <a href="{{ path('homepage') }}" class="btn btn-primary center-block">retour à l'accueil</a>
     </p>
 
 {% endblock %}

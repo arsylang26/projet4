@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -34,7 +36,7 @@ class BookingType extends AbstractType
                 'required' => true,
                 'first_options' => array('label' => 'Votre adresse courriel'),
                 'second_options' => array('label' => 'Confirmer votre adresse courriel')))
-            ->add('bookingDate', DateType::class,
+            ->add('bookingDate', DateTimeType::class,
                 array('label' => 'Date de réservation', 'format' => 'dd-MM-yyyy', 'widget' => 'single_text',
                 'attr' => ['class' => 'js-datepicker'], 'html5' => false))//affichage de la date courante par défaut
             ->add('nbTicket', ChoiceType::class, array('choices' => array_combine(range(1, BookingTicket::NB_MAX_TICKET), range(1, BookingTicket::NB_MAX_TICKET)), 'label' => 'nombre de tickets souhaité'))

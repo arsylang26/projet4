@@ -6,6 +6,7 @@ use AppBundle\Validator\HalfDay;
 use AppBundle\Validator\NoBookingDay;
 use AppBundle\Validator\OffDays;
 use AppBundle\Validator\OverBooking;
+use AppBundle\Validator\TooLate;
 use AppBundle\Validator\WeeklyClosingDay;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +27,8 @@ class BookingTicket
     const TYPE_DAY = true;
     const TYPE_HALF_DAY = false;
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
-    const HALF_DAY_HOUR = '14:00';
+    const HALF_DAY_HOUR = '14:00';//heure limite pour la réservation à la journée pour le jour même
+    const TOO_LATE_HOUR='18:00';// heure limite de réservation pour le jour même
     const OFF_DAYS = array('1/05', '1/11', '25/12');
     const NO_BOOKING_DAY = 'Sunday';
     const MAX_BOOKING_IN_A_DAY = 1000;
@@ -57,10 +59,11 @@ class BookingTicket
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="bookingDate", type="date")
+     * @ORM\Column(name="bookingDate", type="datetime")
      * @Assert\DateTime(message="le format de la date n'est pas valide")
      * @Assert\GreaterThanOrEqual("today",message="la date doit être ultérieure à aujourd'hui")
-     * @HalfDay()
+
+     * @TooLate()
      * @OffDays()
      * @OverBooking()
      * @WeeklyClosingDay()
@@ -85,7 +88,7 @@ class BookingTicket
 
     /**
      * @var bool
-     *
+     * @HalfDay()
      * @ORM\Column(name="dayLong", type="boolean",options={"BookingTicket"=BookingTicket::TYPE_DAY})
      */
     private $dayLong = self::TYPE_DAY;

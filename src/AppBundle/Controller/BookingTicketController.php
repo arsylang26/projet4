@@ -36,6 +36,7 @@ class BookingTicketController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
 
+
             $request->getSession()->getFlashBag()->add('notice', 'votre demande va se poursuivre');
             return $this->redirectToRoute("ticketOrder");
 

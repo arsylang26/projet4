@@ -20,7 +20,7 @@
 
             <p>Bonjour cher (chère) client (e), </p>
             <br/>
-            <p>vous avez commandé et réglé {{ booking.nbTicket }} billet(s) sur notre site web.</p>
+            <p>vous avez commandé  {{ booking.nbTicket }} billet(s) sur notre site web et réglé la somme de <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} € </strong>.</p>
             <p>En voici la liste :</p>
             <br/>
             <div class="recap">

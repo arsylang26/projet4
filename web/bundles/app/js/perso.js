@@ -41,7 +41,8 @@ $("button.stripe-button-el").removeAttr('style').css({
     "background-image": "linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4)",
     "padding": "6px 12px",
     "color": "white",
-    "font-size": "1em"
+    "font-size": "1em",
+    "text-align": "center"
 }).html("Procéder au paiement");
 
 //personalisation de l'adresse courriel du client dans le modal stripe
@@ -55,7 +56,7 @@ $('input[type=checkbox]').click(function () {
     if (this.checked) {
 
       $(this).parent().append("<p id='info'><strong>Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée."+
-          "Un justificatif sera demandé lors de votre visite</strong></p>");
+          " Un justificatif sera demandé lors de votre visite</strong></p>");
     }else{
         $('#info').remove();
     }
