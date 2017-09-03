@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Validator\HalfDay;
+use AppBundle\Validator\Holiday;
 use AppBundle\Validator\NoBookingDay;
 use AppBundle\Validator\OffDays;
 use AppBundle\Validator\OverBooking;
@@ -63,6 +64,7 @@ class BookingTicket
      * @Assert\DateTime(message="le format de la date n'est pas valide")
      * @Assert\GreaterThanOrEqual("today",message="la date doit être ultérieure à aujourd'hui")
      * @TooLate()
+     * @Holiday()
      * @OffDays()
      * @OverBooking()
      * @WeeklyClosingDay()

@@ -13,7 +13,7 @@ body {
 }
 
 #content {
-    opacity:.9;
+    opacity: .9;
     z-index: 1;
     min-height: 100%; /* 100% de la hauteur du view-port*/
     background: #e6eeff;
@@ -21,11 +21,10 @@ body {
     margin: auto; /* Permet de centrer la div */
 
 }
-#evidence{
-    color:red;
+
+#evidence {
+    color: red;
 }
-
-
 
 #content h3 {
     text-align: center;
@@ -37,38 +36,58 @@ footer {
     text-align: center;
     background: #e6eeff;
 }
-.recap tr{
+
+.recap tr {
     border: 2px solid black;
 
 }
-.recap td{
+
+.recap td {
     background-color: papayawhip;
 }
-.notice{
-    color:red;
+
+.notice {
+    color: red;
     font-style: italic;
 }
-form li{
-    color:red;
-    display:inline;
+
+form li {
+    color: red;
+    display: inline;
 
 }
 
-#orderAmount{
+#orderAmount {
     text-align: center;
     font-size: large;
 }
-/*centrage du bouton de paiement sur la page recap*/
-button.stripe-button-el{
-    text-align:center;
+
+.ticket_title {
+    display: table-cell;
+    vertical-align: middle;
+    width: 15px;
+    font-size: 30px;
+    padding: 0;
+    box-shadow: 0 0 7px 2px black;
+    background-color: cornsilk;
+
 }
 
+.ticket_title span {
+    display: table;
+    white-space: nowrap;
+    transform: rotate(-90deg) translate(-100%, 0);
+    transform-origin: 1.5em center;
+}
+
+.orderdone {
+    text-align: center;
+}
 
 .Checkout.is-desktop .Header-loggedInEmail {
-    color:red;
+    color: red;
     font-weight: bold;
 }
-
 
 /*barre de progression*/
 .trolley {
@@ -84,6 +103,7 @@ ol.progress-meter {
     padding-bottom: 9.5px;
     list-style-type: none;
 }
+
 ol.progress-meter li {
     display: inline-block;
     text-align: center;
@@ -94,6 +114,7 @@ ol.progress-meter li {
     border-bottom-width: 4px;
     border-bottom-style: solid;
 }
+
 ol.progress-meter li:before {
     position: relative;
     float: left;
@@ -104,9 +125,11 @@ ol.progress-meter li:before {
     left: -o-calc(50% - 9.5px);
     left: calc(50% - 9.5px);
 }
+
 ol.progress-meter li.done {
     font-size: 12px;
 }
+
 ol.progress-meter li.done:before {
     content: "\2713";
     height: 19px;
@@ -116,27 +139,33 @@ ol.progress-meter li.done:before {
     border: none;
     border-radius: 19px;
 }
+
 ol.progress-meter li.todo {
     font-size: 12px;
 }
+
 ol.progress-meter li.todo:before {
     content: "\2B24";
     font-size: 17.1px;
     bottom: -26.95px;
     line-height: 18.05px;
 }
+
 ol.progress-meter li.done {
     color: black;
     border-bottom-color: yellowgreen;
 }
+
 ol.progress-meter li.done:before {
     color: white;
     background-color: yellowgreen;
 }
+
 ol.progress-meter li.todo {
     color: silver;
     border-bottom-color: silver;
 }
+
 ol.progress-meter li.todo:before {
     color: silver;
 }

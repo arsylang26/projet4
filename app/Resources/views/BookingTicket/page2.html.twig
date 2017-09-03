@@ -2,9 +2,10 @@
 {% form_theme form _self %}
 
 {% block _booking_page2_tickets_entry_widget %}
-    <div class="">
+    <div class="tickets_table">
         <table class="table table-bordered table-striped table-condensed">
             <tr>
+                <td class="ticket_title"><span>billet n°</span></td>
                 <td>{{ form_widget(form) }}</td>
             </tr>
         </table>
@@ -14,17 +15,17 @@
     <h3>Formulaire de réservation des billets du Musée du louvre</h3>
     <div class="container trolley">
         <ol class="progress-meter">
-            <li class="progress-point done">Vos coordonnées</li>
-            <li class="progress-point done">les visiteurs</li>
-            <li class="progress-point todo">votre commande</li>
-            <li class="progress-point todo">finalisation</li>
+            <li class="progress-point done"><a href="{{ path('homepage') }}">Vos coordonnées</a></li>
+            <li class="progress-point done">Les visiteurs</li>
+            <li class="progress-point todo">Votre commande</li>
+            <li class="progress-point todo">Finalisation</li>
         </ol>
     </div>
     <div class="well">
         {{ form_start(form) }}
         {% for ticket in form.tickets %}
-        {{ form_widget(ticket) }}
-        {% endfor%}
+            {{ form_widget(ticket) }}
+        {% endfor %}
         <input class="btn btn-success center-block" type="submit"/>
         {{ form_end(form) }}
     </div>

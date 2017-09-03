@@ -4,67 +4,72 @@
         <h3>résumé de votre commande</h3>
         <div class="container trolley">
             <ol class="progress-meter">
-                <li class="progress-point done">Vos coordonnées</li>
-                <li class="progress-point done">les visiteurs</li>
-                <li class="progress-point done">votre commande</li>
-                <li class="progress-point todo">finalisation</li>
+                <li class="progress-point done"><a href="{{ path('homepage') }}">Vos coordonnées</a></li>
+                <li class="progress-point done"><a href="{{ path('ticketOrder') }}">Les visiteurs</a></li>
+                <li class="progress-point done">Votre commande</li>
+                <li class="progress-point todo">Finalisation</li>
             </ol>
         </div>
-        <div class="recap table-responsive">
-            <table class="table table-bordered table-striped">
-                {% for key,ticket in booking.tickets %}
-                    <tr>
-                        <td>
-                            <p>Une entrée à la {{ booking.dayLongLabel }} à {{ ticket.discountLabel }}
-                                pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong></p>
-                            <p>Prix :<strong>
-                                    {#en ternaire (ticket.computePrice) ? {{ ticket.computePrice }} € : gratuit#}
-                                    {% if (ticket.computePrice>0) %}
-                                        {{ ticket.computePrice|number_format(2, ',', '.') }} €
-                                    {% else %}gratuit
-                                    {% endif %}
-                                </strong></p>
-                            <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
-                            <p>visiteur: <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong></p>
-                            <p>né(e) le: {{ ticket.birthDate|localizeddate('long','none') }}</p>
-                            <p>Pays: {{ ticket.country }}</p>
-                            {#affichage de la mention losqu'il y a lieu#}
-                            {% if(ticket.discount) %}
-                                <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit au tarif
-                                        réduit lors de votre visite</strong></p>
-                            {% endif %}
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('delTicket', { 'index': key}) }}">Supprimer</a>
-                            <a class="btn btn-primary btn-xs"
-                               href="{{ path('ticketOrder') }}">Modifier</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
+        <div class="form-group">
+            <div class="recap table-responsive">
+                <table class="table table-bordered table-striped">
+                    {% for key,ticket in booking.tickets %}
+                        <tr>
+                            <td>
+                                <p>Une entrée à la {{ booking.dayLongLabel }} à {{ ticket.discountLabel }}
+                                    pour le <strong>{{ booking.bookingDate| localizeddate('full','none') }}</strong></p>
+                                <p>Prix :<strong>
+                                        {#en ternaire (ticket.computePrice) ? {{ ticket.computePrice }} € : gratuit#}
+                                        {% if (ticket.computePrice>0) %}
+                                            {{ ticket.computePrice|number_format(2, ',', '.') }} €
+                                        {% else %}gratuit
+                                        {% endif %}
+                                    </strong></p>
+                                <p>Ticket N°: <strong>{{ ticket.ticketCode }}</strong></p>
+                                <p>visiteur: <strong>{{ ticket.lastName|upper }}  {{ ticket.firstName|title }}</strong>
+                                </p>
+                                <p>né(e) le: {{ ticket.birthDate|localizeddate('long','none') }}</p>
+                                <p>Pays: {{ ticket.country }}</p>
+                                {#affichage de la mention losqu'il y a lieu#}
+                                {% if(ticket.discount) %}
+                                    <p class="notice"><strong>Vous devrez présenter les justificatifs ouvrant droit au
+                                            tarif
+                                            réduit lors de votre visite</strong></p>
+                                {% endif %}
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('delTicket', { 'index': key}) }}">Supprimer</a>
+                                <a class="btn btn-primary btn-xs"
+                                   href="{{ path('ticketOrder') }}">Modifier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
 
-        <p id="orderAmount">le total de votre commande s'élève à: <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
+            <p id="orderAmount">le total de votre commande s'élève à:
+                <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
 
-        <form action="" method="POST" style="text-align: center;">
-            {% if(booking.computeAmount>0) %}
-            <script
-                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                    data-description="votre adresse mail:"
-                    data-email="{{ booking.email }}"
-                    data-currency="eur"
-                    data-key="{{ stripe_public_key }}"
-                    data-amount="{{ booking.computeAmount* 100 }}"
-                    data-name="Musée du Louvre"
-                    data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
-                    data-zip-code="false"
-                    data-locale="auto"
-                    data-allow-remember-me="false"
-            >
-            </script>
-            {% else %}
+            <form action="" method="POST" style="text-align: center;">
+                {% if(booking.computeAmount>0) %}
+                    <script
+                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-description="votre adresse mail:"
+                            data-email="{{ booking.email }}"
+                            data-currency="eur"
+                            data-key="{{ stripe_public_key }}"
+                            data-amount="{{ booking.computeAmount* 100 }}"
+                            data-name="Musée du Louvre"
+                            data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
+                            data-zip-code="false"
+                            data-locale="auto"
+                            data-allow-remember-me="false"
+                    >
+                    </script>
+                {% else %}
                 <input type="submit" value="Confirmer" name="freeTicket">
-            {% endif %}
-        </form>
+                {% endif %}
+            </form>
 
+        </div>
     </div>
 {% endblock %}

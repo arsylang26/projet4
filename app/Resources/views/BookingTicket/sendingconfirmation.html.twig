@@ -4,14 +4,15 @@
     <div class="container trolley">
         <ol class="progress-meter">
             <li class="progress-point done">Vos coordonnées</li>
-            <li class="progress-point done">les visiteurs</li>
-            <li class="progress-point done">votre commande</li>
-            <li class="progress-point done">finalisation</li>
+            <li class="progress-point done">Les visiteurs</li>
+            <li class="progress-point done">Votre commande</li>
+            <li class="progress-point done">Finalisation</li>
         </ol>
     </div>
-    <h4>Un courriel de confirmation de commande vous a été envoyé à <strong>{{ booking.email }}</strong> avec vos billets</h4>
+    <div class="orderdone">
+    <h4>Un courriel de confirmation de commande vous a été envoyé à <strong>{{ booking.email }}</strong> avec vos billets.</h4>
     <p>
-        <a href="{{ path('homepage') }}" class="btn btn-primary center-block">retour à l'accueil</a>
+        <a href="{{ path('homepage') }}" class="btn btn-primary">retour à l'accueil</a>
     </p>
-
+    </div>
 {% endblock %}
