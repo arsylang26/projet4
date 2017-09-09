@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BookingTicket
- *
+
  * @ORM\Table(name="booking_ticket")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingTicketRepository")
  */
@@ -45,10 +45,16 @@ class BookingTicket
 
     /**
      * @var string
+     * @ORM\Column(name="orderReference", type="string")
+     */
+    private $orderReference;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="email", type="string", length=100)
-     * @Assert\NotBlank(message="entrer une adresse courrier")
-     * @Assert\Email(checkMX=true,message="l'adresse courriel '{{ value }}' n'est pas valide: vérifiez votre saisie.")
+     * @Assert\NotBlank(message="entrer une adresse courrier",groups={"step1"})
+     * @Assert\Email(checkMX=true,message="l'adresse courriel '{{ value }}' n'est pas valide: vérifiez votre saisie.",groups={"step1"})
      */
     private $email;
 
@@ -61,14 +67,14 @@ class BookingTicket
     /**
      * @var \DateTime
      * @ORM\Column(name="bookingDate", type="datetime")
-     * @Assert\DateTime(message="le format de la date n'est pas valide")
-     * @Assert\GreaterThanOrEqual("today",message="la date doit être ultérieure à aujourd'hui")
-     * @TooLate()
-     * @Holiday()
-     * @OffDays()
-     * @OverBooking()
-     * @WeeklyClosingDay()
-     * @NoBookingDay()
+     * @Assert\DateTime(message="le format de la date n'est pas valide",groups={"step1"})
+     * @Assert\GreaterThanOrEqual("today",message="la date doit être ultérieure à aujourd'hui",groups={"step1"})
+     * @TooLate(groups={"step1"})
+     * @Holiday(groups={"step1"})
+     * @OffDays(groups={"step1"})
+     * @OverBooking(groups={"step1"})
+     * @WeeklyClosingDay(groups={"step1"})
+     * @NoBookingDay(groups={"step1"})
      */
     private $bookingDate;
 
@@ -89,7 +95,7 @@ class BookingTicket
 
     /**
      * @var bool
-     * @HalfDay()
+     * @HalfDay(groups={"step1"})
      * @ORM\Column(name="dayLong", type="boolean",options={"BookingTicket"=BookingTicket::TYPE_DAY})
      */
     private $dayLong = self::TYPE_DAY;
@@ -122,6 +128,18 @@ class BookingTicket
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get orderReference
+     * @return string
+     */
+    public function getOrderReference(){
+        return $this->orderReference;
+    }
+
+    public function setOrderReference($orderReference){
+        $this->orderReference=$orderReference;
     }
 
     /**
@@ -317,5 +335,17 @@ class BookingTicket
         }
         $this->setOrderAmount($orderAmount);
         return $this->orderAmount;
+    }
+
+
+    /**
+
+     */
+    public function cookOrderReference(){
+        $year=$this->getCurrentDate()->format('Y');
+       $month=$this->getCurrentDate()->format('m');
+       $orderNumber=uniqid();
+       $this->orderReference=$year.$month.$orderNumber;
+       return $this->orderReference;
     }
 }

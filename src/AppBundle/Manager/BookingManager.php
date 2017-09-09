@@ -39,9 +39,14 @@ class BookingManager
 
     public function initBooking()
     {
-        $booking = new BookingTicket();
-        $this->session->set('booking', $booking);
+        $booking = $this->session->get('booking', null);
+        if ($booking === null) { //si aucune session
+
+            $booking = new BookingTicket();
+            $this->session->set('booking', $booking);
+        }
         return $booking;
+
     }
 
 
@@ -92,8 +97,8 @@ class BookingManager
     public function orderConfirm($stripeSecretKey, BookingTicket $booking)
     {
         $amount = $booking->getOrderAmount();
-        $orderID = $booking->getId();
-        if ($this->request->isMethod('POST')) {
+        $orderReference = $booking->cookOrderReference();
+        if ($this->request->isMethod(Request::METHOD_POST)) {//equivalent a post
             $token = $this->request->get('stripeToken');
             \Stripe\Stripe::setApiKey($stripeSecretKey);
 
@@ -103,16 +108,16 @@ class BookingManager
                        "amount" => $amount * 100,
                        "currency" => "eur",
                        "source" => $token,
-                       "description" => "Paiement commande n° $orderID"
+                       "description" => "Paiement commande n° $orderReference"
                    ));
                }
                 $this->em->persist($booking);
                 $this->em->flush();
-                $this->session->getFlashBag()->add('success', 'Paiement effectué avec succès');
+
                 $this->sendEmail->sendEmail($booking);
                 return true;
             } catch (\Exception $exception) {
-                $this->session->getFlashBag()->add('error', 'Paiement impossible ' . $exception->getMessage());
+                $this->session->getFlashBag()->add('notice', 'Paiement impossible ' . $exception->getMessage());
             }
         }
         return false;

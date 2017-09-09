@@ -81,6 +81,7 @@ class BookingTicketController extends Controller
     {
         $booking = $bookingManager->recoverBooking();
         if ($bookingManager->orderConfirm($this->getParameter('stripe_secret_key'), $booking)) {
+
             return $this->redirectToRoute('sendingOk');
         } else {
 

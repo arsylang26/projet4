@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\BookingTicket;
@@ -22,13 +23,14 @@ class BookingPage2Type extends AbstractType
     {
         $builder
             ->add('tickets', CollectionType::class, array(
-            'entry_type' => TicketType::class,
-                'label'=>false));
+                'entry_type' => TicketType::class,
+                'label' => false));
 
     }
 
-public function configureOptions(OptionsResolver $resolver)
-{
-$resolver->setDefaults(array('data_class' => BookingTicket::class));
-}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array('data_class' => BookingTicket::class,
+            'validation_groups' => array("step1","step2")));
+    }
 }

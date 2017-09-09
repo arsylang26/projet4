@@ -49,6 +49,7 @@ class BookingType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => BookingTicket::class,
+            'validation_groups'=>array("step1")
         ));
     }
 }

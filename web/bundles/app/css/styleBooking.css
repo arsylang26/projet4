@@ -51,15 +51,13 @@ footer {
     font-style: italic;
 }
 
-form li {
-    color: red;
-    display: inline;
-
-}
 
 #orderAmount {
     text-align: center;
     font-size: large;
+}
+#orderAmount strong{
+    font-size: larger;
 }
 
 .ticket_title {
@@ -71,6 +69,10 @@ form li {
     box-shadow: 0 0 7px 2px black;
     background-color: cornsilk;
 
+}
+.ticket_input {
+    box-shadow: 1px 0 5px 3px seagreen;
+    /*border-color: lawngreen;*/
 }
 
 .ticket_title span {
@@ -87,7 +89,9 @@ form li {
 .Checkout.is-desktop .Header-loggedInEmail {
     color: red;
     font-weight: bold;
+
 }
+
 
 /*barre de progression*/
 .trolley {

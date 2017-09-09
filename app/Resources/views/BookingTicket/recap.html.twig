@@ -46,8 +46,8 @@
                 </table>
             </div>
 
-            <p id="orderAmount">le total de votre commande s'élève à:
-                <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
+            <p id="orderAmount">Le total de votre commande s'élève à:
+                    <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
 
             <form action="" method="POST" style="text-align: center;">
                 {% if(booking.computeAmount>0) %}
@@ -66,7 +66,7 @@
                     >
                     </script>
                 {% else %}
-                <input type="submit" value="Confirmer" name="freeTicket">
+                <input class="btn btn-success" type="submit" value="Confirmer" name="freeTicket">
                 {% endif %}
             </form>
 

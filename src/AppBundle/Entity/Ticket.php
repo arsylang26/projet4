@@ -33,8 +33,8 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=50)
-     * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="prénom trop long")
-     * @Alpha()
+     * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="prénom trop long",groups={"step2"})
+     * @Alpha(groups={"step2"})
      */
     private $firstName;
 
@@ -42,8 +42,8 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=50)
-     * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="patronyme trop long")
-     * @Alpha()
+     * @Assert\Length(min="2", max="50", minMessage="2 lettres minimum", maxMessage="patronyme trop long",groups={"step2"})
+     * @Alpha(groups={"step2"})
      */
     private $lastName;
 
@@ -51,8 +51,8 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="birthDate", type="date")
-     * @Assert\Date(message="le format de la date n'est pas valide")
-     * @Assert\LessThan("today",message="Vous devez être né(e) pour commander ! ")
+     * @Assert\Date(message="le format de la date n'est pas valide",groups={"step2"})
+     * @Assert\LessThan("today",message="Vous devez être né(e) pour commander ! ",groups={"step2"})
      */
     private $birthDate;
 
