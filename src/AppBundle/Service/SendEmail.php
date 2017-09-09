@@ -9,7 +9,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\BookingTicket;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
 class SendEmail

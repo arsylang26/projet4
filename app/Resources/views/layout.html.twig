@@ -4,12 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Billetterie Louvre{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ asset('bundles/app/pictures/icone.jpg') }}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{{ asset('app/pictures/icone.jpg') }}" type="image/x-icon"/>
     {% block stylesheets %}
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css">
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/styleBooking.css') }}">
+        <link rel="stylesheet" href="{{ asset('app/css/styleBooking.css') }}">
 
     {% endblock %}
 </head>
@@ -33,8 +33,9 @@
     <hr/>
     <footer>
         <p>Musée du Louvre © {{ 'now'|date('Y') }}
-            <a href="#">CGU</a>
-            <a href="#">CGV</a>
+            <a href="#">CGU |</a>
+            <a href="#"> CGV |</a>
+            <a href="#"> Nous contacter</a>
         </p>
     </footer>
 </div>
@@ -44,7 +45,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
-    <script src="{{ asset('bundles/app/js/perso.js') }}"></script>
+    <script src="{{ asset('app/js/perso.js') }}"></script>
 
 {% endblock %}
 

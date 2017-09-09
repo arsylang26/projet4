@@ -16,7 +16,7 @@ class TooLateValidator extends ConstraintValidator
 {
 
     public function validate($value, Constraint $constraint)
-    {dump($value);
+    {
         $isOK = $this->isOk($value);
         if (!$isOK) {
             //  déclenche l'erreur pour le formulaire, avec en argument le message
@@ -30,8 +30,6 @@ class TooLateValidator extends ConstraintValidator
     {
         $currentDate = new \DateTime();
         $today = $currentDate->format('d/m/Y');
-
-
         if (($currentDate->format('H:i') > BookingTicket::TOO_LATE_HOUR)
             && ($date->format('d/m/Y') == $today)) {
             return false;

@@ -15,7 +15,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 class AlphaValidator extends ConstraintValidator
 {
 
-
     public function validate($value, Constraint $constraint)
     {
       if (!preg_match('/^[\p{Latin}-\s]+$/u', $value, $matches)) {

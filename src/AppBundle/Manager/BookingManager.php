@@ -24,9 +24,8 @@ class BookingManager
     /** @var EntityManager */
     private $em;
 
-    /** @var RequestStack  */
+    /** @var RequestStack */
     private $request;
-
 
 
     public function __construct(Session $session, SendEmail $sendEmail, RequestStack $request, EntityManager $em)
@@ -48,7 +47,6 @@ class BookingManager
         return $booking;
 
     }
-
 
 
     public function delTickets($index)
@@ -103,14 +101,14 @@ class BookingManager
             \Stripe\Stripe::setApiKey($stripeSecretKey);
 
             try {
-               if($amount>0) {
-                   \Stripe\Charge::create(array(
-                       "amount" => $amount * 100,
-                       "currency" => "eur",
-                       "source" => $token,
-                       "description" => "Paiement commande n° $orderReference"
-                   ));
-               }
+                if ($amount > 0) {
+                    \Stripe\Charge::create(array(
+                        "amount" => $amount * 100,
+                        "currency" => "eur",
+                        "source" => $token,
+                        "description" => "Paiement commande n° $orderReference"
+                    ));
+                }
                 $this->em->persist($booking);
                 $this->em->flush();
 

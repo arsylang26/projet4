@@ -14,7 +14,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class WeeklyClosingDayValidator extends ConstraintValidator
 {
-const WEEKLY_CLOSING_DAY='Tuesday';
     public function validate($value, Constraint $constraint)
     {
         $isOK = $this->isOk($value);
@@ -28,7 +27,6 @@ const WEEKLY_CLOSING_DAY='Tuesday';
 
     public function isOk(\DateTime $date)
     {
-
         if ($date->format('l') == BookingTicket::WEEKLY_CLOSING_DAY
         ) {
             return false;

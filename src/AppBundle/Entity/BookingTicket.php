@@ -9,7 +9,6 @@ use AppBundle\Validator\OffDays;
 use AppBundle\Validator\OverBooking;
 use AppBundle\Validator\TooLate;
 use AppBundle\Validator\WeeklyClosingDay;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BookingTicket
-
  * @ORM\Table(name="booking_ticket")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingTicketRepository")
  */
@@ -29,7 +27,7 @@ class BookingTicket
     const TYPE_HALF_DAY = false;
     const NB_MAX_TICKET = 15; // plafond de tickets par commande
     const HALF_DAY_HOUR = '14:00';//heure limite pour la réservation à la journée pour le jour même
-    const TOO_LATE_HOUR='18:00';// heure limite de réservation pour le jour même
+    const TOO_LATE_HOUR = '18:00';// heure limite de réservation pour le jour même
     const OFF_DAYS = array('1/05', '1/11', '25/12');
     const NO_BOOKING_DAY = 'Sunday';
     const MAX_BOOKING_IN_A_DAY = 1000;
@@ -134,12 +132,14 @@ class BookingTicket
      * Get orderReference
      * @return string
      */
-    public function getOrderReference(){
+    public function getOrderReference()
+    {
         return $this->orderReference;
     }
 
-    public function setOrderReference($orderReference){
-        $this->orderReference=$orderReference;
+    public function setOrderReference($orderReference)
+    {
+        $this->orderReference = $orderReference;
     }
 
     /**
@@ -162,30 +162,6 @@ class BookingTicket
     public function setEmail($email)
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get currentDate
-     *
-     * @return \DateTime
-     */
-    public function getCurrentDate()
-    {
-        return $this->currentDate;
-    }
-
-    /**
-     * Set currentDate
-     *
-     * @param \DateTime $currentDate
-     *
-     * @return BookingTicket
-     */
-    public function setCurrentDate($currentDate)
-    {
-        $this->currentDate = $currentDate;
 
         return $this;
     }
@@ -337,15 +313,38 @@ class BookingTicket
         return $this->orderAmount;
     }
 
+    /**
+     */
+    public function cookOrderReference()
+    {
+        $year = $this->getCurrentDate()->format('Y');
+        $month = $this->getCurrentDate()->format('m');
+        $orderNumber = uniqid();
+        $this->orderReference = $year . $month . $orderNumber;
+        return $this->orderReference;
+    }
 
     /**
-
+     * Get currentDate
+     *
+     * @return \DateTime
      */
-    public function cookOrderReference(){
-        $year=$this->getCurrentDate()->format('Y');
-       $month=$this->getCurrentDate()->format('m');
-       $orderNumber=uniqid();
-       $this->orderReference=$year.$month.$orderNumber;
-       return $this->orderReference;
+    public function getCurrentDate()
+    {
+        return $this->currentDate;
+    }
+
+    /**
+     * Set currentDate
+     *
+     * @param \DateTime $currentDate
+     *
+     * @return BookingTicket
+     */
+    public function setCurrentDate($currentDate)
+    {
+        $this->currentDate = $currentDate;
+
+        return $this;
     }
 }

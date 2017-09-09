@@ -3,14 +3,9 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Entity\BookingTicket;
-use AppBundle\Entity\Ticket;
-use AppBundle\Exception\BookingNotFoundException;
-use AppBundle\Form\Type\BookingPage2Type;
-use AppBundle\Form\Type\TicketType;
-use AppBundle\Manager\BookingManager;
-use AppBundle\Service\SendEmail;
 
+use AppBundle\Form\Type\BookingPage2Type;
+use AppBundle\Manager\BookingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\BookingType;
 use Symfony\Component\HttpFoundation\Request;

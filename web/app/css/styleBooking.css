@@ -13,12 +13,14 @@ body {
 }
 
 #content {
+    padding: 30px;
     opacity: .9;
     z-index: 1;
     min-height: 100%; /* 100% de la hauteur du view-port*/
     background: #e6eeff;
     width: 100%;
     margin: auto; /* Permet de centrer la div */
+    margin-top: 30px;
 
 }
 
@@ -51,12 +53,12 @@ footer {
     font-style: italic;
 }
 
-
 #orderAmount {
     text-align: center;
     font-size: large;
 }
-#orderAmount strong{
+
+#orderAmount strong {
     font-size: larger;
 }
 
@@ -70,9 +72,10 @@ footer {
     background-color: cornsilk;
 
 }
+
 .ticket_input {
     box-shadow: 1px 0 5px 3px seagreen;
-    /*border-color: lawngreen;*/
+
 }
 
 .ticket_title span {
@@ -91,7 +94,6 @@ footer {
     font-weight: bold;
 
 }
-
 
 /*barre de progression*/
 .trolley {

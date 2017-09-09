@@ -4,18 +4,11 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\BookingTicket;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
@@ -32,13 +25,13 @@ class BookingType extends AbstractType
             ->add('email', RepeatedType::class, array(
                 'type' => EmailType::class,
                 'invalid_message' => 'Les adresses courriels sont différentes.',
-                'options' => array('attr' => array('class' => 'email-field','autofocus'=>'autofocus')),
+                'options' => array('attr' => array('class' => 'email-field', 'autofocus' => 'autofocus')),
                 'required' => true,
                 'first_options' => array('label' => 'Votre adresse courriel'),
                 'second_options' => array('label' => 'Confirmer votre adresse courriel')))
             ->add('bookingDate', DateTimeType::class,
                 array('label' => 'Date de réservation', 'format' => 'dd-MM-yyyy', 'widget' => 'single_text',
-                'attr' => ['class' => 'js-datepicker'], 'html5' => false))//affichage de la date courante par défaut
+                    'attr' => ['class' => 'js-datepicker'], 'html5' => false))//affichage de la date courante par défaut
             ->add('nbTicket', ChoiceType::class, array('choices' => array_combine(range(1, BookingTicket::NB_MAX_TICKET), range(1, BookingTicket::NB_MAX_TICKET)), 'label' => 'nombre de tickets souhaité'))
             ->add('dayLong', ChoiceType::class, array('choices' => array('journée' => BookingTicket::TYPE_DAY, 'demi-journée' => BookingTicket::TYPE_HALF_DAY),
                 'label' => 'billet journée/demi-journée'));
@@ -49,7 +42,7 @@ class BookingType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => BookingTicket::class,
-            'validation_groups'=>array("step1")
+            'validation_groups' => array("step1")
         ));
     }
 }

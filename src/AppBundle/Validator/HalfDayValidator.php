@@ -30,15 +30,14 @@ class HalfDayValidator extends ConstraintValidator
     {
         $currentDate = new \DateTime();
         $today = $currentDate->format('d/m/Y');
-        $date = $this->context->getRoot()->getData()->getBookingDate();
+        $bookingDate = $this->context->getRoot()->getData()->getBookingDate();
         if ($value) {// si à la journée
             if (($currentDate->format('H:i') > BookingTicket::HALF_DAY_HOUR)
-                && ($date->format('d/m/Y')) == $today
+                && ($bookingDate->format('d/m/Y')) == $today
             ) {
-                return false;
+                return false; //si c'est aujourd'hui et qu'il est + de 14h00
             }
-            return true;
         }
+        return true; //c'est à la demi-journée et/ou pour un autre jour qu'aujourdhui
     }
-
 }

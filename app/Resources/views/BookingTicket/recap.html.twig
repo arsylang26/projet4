@@ -45,10 +45,8 @@
                     {% endfor %}
                 </table>
             </div>
-
             <p id="orderAmount">Le total de votre commande s'élève à:
-                    <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
-
+                <strong>{{ booking.computeAmount|number_format(2, ',', '.') }} €</strong></p>
             <form action="" method="POST" style="text-align: center;">
                 {% if(booking.computeAmount>0) %}
                     <script
@@ -59,7 +57,7 @@
                             data-key="{{ stripe_public_key }}"
                             data-amount="{{ booking.computeAmount* 100 }}"
                             data-name="Musée du Louvre"
-                            data-image="{{ asset('bundles/app/pictures/icone.jpg') }}"
+                            data-image="{{ asset('app/pictures/icone.jpg') }}"
                             data-zip-code="false"
                             data-locale="auto"
                             data-allow-remember-me="false"
@@ -69,7 +67,6 @@
                 <input class="btn btn-success" type="submit" value="Confirmer" name="freeTicket">
                 {% endif %}
             </form>
-
         </div>
     </div>
 {% endblock %}
