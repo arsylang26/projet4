@@ -12,9 +12,9 @@ class BookingTicketControllerTest extends WebTestCase
 {
     private $client;
 
-    // tests unitaires
+    // tests fonctionnels
 
-    public function testPage1()// on teste la page1
+    public function testPage1()// on teste la page1 contenu et retour http
     {
 
         $crawler = $this->client->request('GET', '/');

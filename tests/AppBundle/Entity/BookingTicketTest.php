@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 
 class BookingTicketTest extends TestCase
-{//tests fonvtionnels
+{//tests unitaires
 
     /**
      * @dataProvider ticketProvider
