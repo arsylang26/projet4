@@ -1,6 +1,4 @@
-/**
- * Created by jafa on 14/07/2017.
- */
+//mise en forme des calendriers de saisie
 $.fn.datepicker.dates['fr'] = {
     days: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
     daysShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
@@ -13,14 +11,52 @@ $.fn.datepicker.dates['fr'] = {
     titleFormat: "MM yyyy",
     weekStart: 1
 };
+function Holidays (year){
+    var NewYearDay= new Date(year, "01", "01");
+    var LabourDay = new Date(year, "05", "01");
+    var Victoire1945 = new Date(year, "05", "08");
+    var FeteNationale = new Date(year,"07", "14");
+    var Assomption = new Date(year, "08", "15");
+    var Toussaint = new Date(year, "11", "01");
+    var Armistice = new Date(year, "11", "11");
+    var Noel = new Date(year, "12", "25");
+
+
+    var G = year%19;
+    var C = Math.floor(year/100);
+    var H = (C - Math.floor(C/4) - Math.floor((8*C+13)/25) + 19*G + 15)%30;
+    var I = H - Math.floor(H/28)*(1 - Math.floor(H/28)*Math.floor(29/(H + 1))*Math.floor((21 - G)/11));
+    var J = (year*1 + Math.floor(year/4) + I + 2 - C + Math.floor(C/4))%7;
+    var L = I - J;
+    var MoisPaques = 3 + Math.floor((L + 40)/44);
+    var JourPaques = L + 28 - 31*Math.floor(MoisPaques/4);
+    var LundiPaques = new Date(year, MoisPaques-1, JourPaques+1);
+    var Ascension = new Date(year, MoisPaques-1, JourPaques+39);
+    var LundiPentecote = new Date(year, MoisPaques-1, JourPaques+50);
+
+    return [NewYearDay, LabourDay, LundiPaques, Victoire1945, Ascension, LundiPentecote, FeteNationale, Assomption, Toussaint, Armistice, Noel];
+}
 $('.js-datepicker').datepicker(
     {
         format: 'dd-mm-yyyy',
         language: 'fr',
         todayBtn: 'linked',
         startDate: 'd',
-        datesDisabled: ['1-05-2018', '1-11-2017', '25-12-2017'],
+        datesDisabled: ['1-05-2018', '1-11-2017', '25-12-2017', '1-01-2018', '8-05-2018', '14-07-2018', '15-08-2018'],
         daysOfWeekDisabled: '0,2'
+        // beforeShowDay: function (date) {
+        //     // console.log(date);
+        //     var h=Holidays(date.getYear());
+        //     for( i=0;i<h.length; i++){
+        //         if (date.getTime()=h[i].getTime()){
+        //             return false;
+        //         }
+        //
+        //     }
+        //     return true;
+        // }
+
+
     }
 );
 $('.js-datepicker-birthdate').datepicker(
@@ -63,41 +99,3 @@ $('input[type=checkbox]').click(function () {
 
 });
 
-
-
-
-
-// function displayDiscountPopup() {
-//
-// var $message='Le tarif réduit ne peut s\'appliquer qu\'aux étudiants, militaires, personnels du musée.<br> Un justificatif sera demandé lors de votre visite';
-//     $('body').append('<div id="discountWarning" title="Avertissement"></div>');
-//     $("#discountWarning").html($message);
-//
-//
-//
-//     var popup = $("#discountWarning").dialog({
-//         autoOpen: true,
-//         width: 400,
-//         dialogClass: 'dialogstyle',
-//         buttons: [
-//             {
-//                 text: "OK",
-//                 "class": 'ui-state-warning',
-//                 click: function () {
-//                     $(this).dialog("close");
-//                     $('#discountWarning').remove();
-//                 }
-//             }
-//         ]
-//     });
-//     $("#discountWarning").prev().addClass('ui-state-warning');
-//     return popup;
-//
-// }
-//
-// $('input[type=checkbox]').click(function () {
-//     if (this.checked) {
-//
-//         $(displayDiscountPopup());
-//
-// });
