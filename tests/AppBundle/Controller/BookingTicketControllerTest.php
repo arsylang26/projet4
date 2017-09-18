@@ -24,11 +24,11 @@ class BookingTicketControllerTest extends WebTestCase
     }
     public function testPage2()
     {
-        $crawler = $this->client->request('GET', '/ticketOrder');
+        $this->client->request('GET', '/ticketOrder');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
-        $this->client->getRequest()->getSession()->set('booking',new BookingTicket());
-        $crawler = $this->client->request('GET', '/ticketOrder');
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->client->request('GET', '/');
+        $this->client->request('GET', '/ticketOrder');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
 
     }

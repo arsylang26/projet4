@@ -32,7 +32,9 @@ class BookingType extends AbstractType
             ->add('bookingDate', DateTimeType::class,
                 array('label' => 'Date de réservation', 'format' => 'dd-MM-yyyy', 'widget' => 'single_text',
                     'attr' => ['class' => 'js-datepicker'], 'html5' => false))//affichage de la date courante par défaut
-            ->add('nbTicket', ChoiceType::class, array('choices' => array_combine(range(1, BookingTicket::NB_MAX_TICKET), range(1, BookingTicket::NB_MAX_TICKET)), 'label' => 'nombre de tickets souhaité'))
+            ->add('nbTicket', ChoiceType::class, array(
+                'choices' => array_combine(range(1, BookingTicket::NB_MAX_TICKET), range(1, BookingTicket::NB_MAX_TICKET)),
+                'label' => 'nombre de tickets souhaité'))
             ->add('dayLong', ChoiceType::class, array('choices' => array('journée' => BookingTicket::TYPE_DAY, 'demi-journée' => BookingTicket::TYPE_HALF_DAY),
                 'label' => 'billet journée/demi-journée'));
 
